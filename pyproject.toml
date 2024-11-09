@@ -27,6 +27,7 @@ flask-smorest = "^0.45.0"
 multiaddr = "^0.0.9"
 p2pnetwork = "^1.2"
 pythonp2p = "^1.7.1"
+pycryptodome = "^3.21.0"
 
 
 [tool.poetry.group.dev.dependencies]
