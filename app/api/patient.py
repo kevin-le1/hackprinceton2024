@@ -68,4 +68,3 @@ def generateInference():
     )
 
     print(response['message']['content'])
-generateInference()
