@@ -4,7 +4,7 @@ import contextlib
 import sqlite3
 import uuid
 
-DATABASE_URL = "./hospital_database.sqlite"
+DATABASE_URL = "/Users/kevin/Desktop/hackathon/proj/app/database_scripts/hospital_database.sqlite"
 
 # Makes call to SQLite database with passed-in SQL statement
 def fetch(sql_statement, params):

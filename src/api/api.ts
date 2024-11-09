@@ -1,11 +1,15 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 type UUID = string;
 
-interface PATIENT {
+// patient_id, patient_name, specialist_type, risk_score, bmi, heart_rate, blood_pressure
+interface Patient {
     patient_id: UUID;
     patient_name: string;
-    information: string;
-    specalist: string;
+    bmi: string;
+    heart_rate:string;
+    blood_pressure:string;
+    specialist_type: string;
+    risk_score: string;
   }
 
 export const api = createApi({
@@ -14,27 +18,27 @@ export const api = createApi({
     baseUrl: "http://127.0.0.1:8000/api/v1", // i am hardcoding
   }),
 
-  tagTypes: ["patient"],
+  tagTypes: ["Patient"],
   endpoints: (builder) => ({
-    postPatient: builder.mutation<string, { display_name: string }>({
-      query: (body) => ({
+    postPatient: builder.mutation<void, void>({
+      query: () => ({
         url: "/patient",
         method: "POST",
-        body: body,
+        body: {},
       }),
-      invalidatesTags: ["patient"],
+      invalidatesTags: ["Patient"],
     }),
     // TODO: type this
-    getPatientAll: builder.query<PATIENT, void>({
+    getPatientAll: builder.query<Patient[], void>({
       query: () => "/patient/all",
-      providesTags: ["patient"],
+      providesTags: ["Patient"],
     }),
-    editPatient: builder.mutation<void, { documentId: UUID; data: PATIENT }>({
+    editPatient: builder.mutation<void, { documentId: UUID; data: Patient }>({
         query: (data) => ({
             url: `/patient/${data.documentId}`,
             method: "PUT",
             body: data,
-            providesTags: ["Documents"],
+            invalidatesTags: ["Patient"],
         })
     }),
 
@@ -42,7 +46,7 @@ export const api = createApi({
       query: (patientID) => ({
         url:`/patient/${patientID}`,
         method: "DELETE",
-        invalidatesTags: ["patient"],
+        invalidatesTags: ["Patient"],
       }),
     }),
   }),

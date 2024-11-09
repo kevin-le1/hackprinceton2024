@@ -21,13 +21,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { visuallyHidden } from '@mui/utils';
 import TextField from '@mui/material/TextField'; 
+import {api} from "../api/api";
 
 interface Data {
   id: number;
   name: string;
   information: string;
   patientRisk: any;
-  specalist: string;
+  specialist: string;
+  uuid: string;
 }
 
 function createData(
@@ -35,14 +37,16 @@ function createData(
   name: any,
   information: any,
   patientRisk: any,
-  specalist: any,
+  specialist: any,
+  uuid: string,
 ): Data {
   return {
     id,
     name,
     information,
     patientRisk,
-    specalist,
+    specialist,
+    uuid
   };
 }
 
@@ -78,10 +82,10 @@ const headCells: readonly HeadCell[] = [
     label: 'Information',
   },
   {
-    id: 'specalist',
+    id: 'specialist',
     numeric: true,
     disablePadding: false,
-    label: 'Specalist',
+    label: 'Specialist',
   },
   {
     id: 'patientRisk',
@@ -138,10 +142,11 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 interface EnhancedTableToolbarProps {
   numSelected: number;
 }
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { addRow: () => void, deleteRow: () => void }) {
-  const { numSelected, addRow, deleteRow } = props;
+function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { addRow: () => void, deleteRow: () => void, handlePostPatient: () => void}) {
+  const { numSelected, addRow, deleteRow, handlePostPatient } = props;
 
   const handleAddRow = () => {
+    handlePostPatient();
     addRow();
   };
 
@@ -205,26 +210,23 @@ export default function Input() {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const [rows, setRows] = React.useState<Data[]>(() => {
-    const savedRows = localStorage.getItem('rows');
-    return savedRows ? JSON.parse(savedRows) : [];
-  });
+  const [rows, setRows] = React.useState<Data[]>([]);
   const [editingCell, setEditingCell] = React.useState<{ id: number; field: keyof Data } | null>(null);
-
-  // Update local storage whenever rows change
-  React.useEffect(() => {
-    localStorage.setItem('rows', JSON.stringify(rows));
-  }, [rows]);
 
   // Add a new row
   const addRow = () => {
-    const newRow = createData(rows.length + 1, '', '', '', '');
+    const newRow = createData(rows.length + 1, '', '', '', '', '');
     setRows([...rows, newRow]);
   };
 
   // Delete selected rows and update pagination
   const deleteRow = () => {
     const newRows = rows.filter((row) => !selected.includes(row.id)).map((row, index) => ({ ...row, id: index + 1 }));
+    const uuids = rows.filter((row) => selected.includes(row.id)).map((row) => row.uuid);
+    console.log(uuids);
+    uuids.forEach((uuid) => {
+      handleDeletePatient(uuid);
+  });
     setRows(newRows);
     setSelected([]);
     setPage((prevPage) => Math.min(prevPage, Math.ceil(newRows.length / rowsPerPage) - 1));
@@ -278,11 +280,62 @@ export default function Input() {
   // Determine the rows to display based on the current page and rows per page
   const paginatedRows = rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
+
+  /* -------------- */
+  // RTK QUERY CODE FROM NOW ON!!!
+  /* -------------- */
+
+  // // POST sends an empty state to flask application
+  const [postPatients] = api.endpoints.postPatient.useMutation();
+  // GET receives all patient data, including UUID & refetching mechanism
+  const { data: patients } = api.endpoints.getPatientAll.useQuery();
+  // DELETE deletes a patient from DB
+  const [deletePatient] = api.endpoints.deletePatient.useMutation();
+  // PUT updates a patient giving the person new information
+  const [editPatient] = api.endpoints.editPatient.useMutation();
+
+  // Post a patient
+  const handlePostPatient = async () => {
+    try {
+      await postPatients();
+    } catch (error) {
+      console.error('Failed to post patient:', error);
+    }
+  }
+
+  // Delete a patient
+  const handleDeletePatient = async (uuid: string) => {
+    try {
+      await deletePatient(uuid).unwrap();
+    } catch (error) {
+      console.error('Failed to delete patient:', error);
+    }
+  };
+
+  // sorry for use effect, but GRANTED i think this use effect is fine becuase it resets rows AFTER patient is updated?
+  // need to typescript it b/c any error do later if you feel like it @kevin
+  React.useEffect(() => {
+    if (patients) {
+      console.log("Fetched patients:", patients); // Log to verify structure
+      setRows(patients.map((patient, index) => ({
+        ...patient,
+        id: index + 1,
+        name: patient[1] || 'No Name', // Default value if undefined
+        information: "BMI: " + patient[4] + " HR: " +patient[5] +" BP: " + patient[6] || 'No Information',
+        specialist: patient[2]|| 'No Specialist',
+        patientRisk: patient[3] || 'TBD',
+        uuid: patient[0]
+      })));
+    }
+  }, [patients]);
+
+
+
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'left', minHeight: '100vh' }}>
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
         <Paper sx={{ width: '80%', mb: 2 }}>
-          <EnhancedTableToolbar numSelected={selected.length} addRow={addRow} deleteRow={deleteRow} />
+          <EnhancedTableToolbar numSelected={selected.length} addRow={addRow} deleteRow={deleteRow} handlePostPatient = {handlePostPatient}/>
           <TableContainer>
             <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium'}>
               <EnhancedTableHead
@@ -308,30 +361,30 @@ export default function Input() {
                           }}
                         />
                       </TableCell>
-                      {['name', 'information', 'specalist'].map((field) => (
+                      {['name', 'information', 'specialist'].map((field) => (
                         <TableCell
                         key={field}
                         onClick={() => handleCellClick(row.id, field as keyof Data)}
-                        align={field === 'specalist' ? 'right' : field === 'information' ? 'right' : 'left'}
+                        align={field === 'specialist' ? 'right' : field === 'information' ? 'right' : 'left'}
                       >
                         {editingCell?.id === row.id && editingCell.field === field ? (
                           <TextField
-                            name={field}
-                            onChange={handleEditChange}
-                            value={editedRow[field] || ''}
-                            onBlur={saveCell}
-                            onKeyDown={(event) => {
-                              if (event.key === 'Enter') saveCell();
-                            }}
-                            variant="standard"
-                            autoFocus
+                          name={field}
+                          onChange={handleEditChange}
+                          value={editedRow[field] || ''}
+                          onBlur={saveCell}
+                          onKeyDown={(event) => {
+                            if (event.key === 'Enter') saveCell();
+                          }}
+                          variant="standard"
+                          autoFocus
                           />
                         ) : (
                             row[field as keyof Data]
                           )}
                         </TableCell>
                       ))}
-                      <TableCell align="left">{row.patientRisk}</TableCell>
+                      <TableCell align="right">{row.patientRisk || 'TBD'}</TableCell>
                     </TableRow>
                   );
                 })}
