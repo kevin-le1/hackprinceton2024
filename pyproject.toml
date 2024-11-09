@@ -23,6 +23,7 @@ psycopg = { extras = ["binary"], version = "^3.2.3" }
 pgvector = "^0.3.5"
 marshmallow-dataclass = "^8.7.1"
 flask-limiter = "^3.8.0"
+flask-smorest = "^0.45.0"
 
 
 [tool.poetry.group.dev.dependencies]
