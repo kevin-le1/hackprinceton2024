@@ -26,7 +26,9 @@ import {api} from "../api/api";
 interface Data {
   id: number;
   name: string;
-  information: string;
+  BMI: string;
+  HR: string;
+  BP: string;
   patientRisk: any;
   specialist: string;
   uuid: string;
@@ -35,7 +37,9 @@ interface Data {
 function createData(
   id: number,
   name: any,
-  information: any,
+  BMI: any,
+  HR: any,
+  BP: any,
   patientRisk: any,
   specialist: any,
   uuid: string,
@@ -43,7 +47,9 @@ function createData(
   return {
     id,
     name,
-    information,
+    BMI,
+    HR,
+    BP,
     patientRisk,
     specialist,
     uuid
@@ -76,10 +82,22 @@ const headCells: readonly HeadCell[] = [
     label: 'Patient Name',
   },
   {
-    id: 'information',
+    id: 'BMI',
     numeric: true,
     disablePadding: false,
-    label: 'Information',
+    label: 'BMI',
+  },
+  {
+    id: 'HR',
+    numeric: true,
+    disablePadding: false,
+    label: 'HR',
+  },
+  {
+    id: 'BP',
+    numeric: true,
+    disablePadding: false,
+    label: 'BPM',
   },
   {
     id: 'specialist',
@@ -142,11 +160,10 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 interface EnhancedTableToolbarProps {
   numSelected: number;
 }
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { addRow: () => void, deleteRow: () => void, handlePostPatient: () => void}) {
-  const { numSelected, addRow, deleteRow, handlePostPatient } = props;
+function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { addRow: () => void, deleteRow: () => void }) {
+  const { numSelected, addRow, deleteRow } = props;
 
   const handleAddRow = () => {
-    handlePostPatient();
     addRow();
   };
 
@@ -215,8 +232,9 @@ export default function Input() {
 
   // Add a new row
   const addRow = () => {
-    const newRow = createData(rows.length + 1, '', '', '', '', '');
+    const newRow = createData(rows.length + 1, '', '', '', '', '', '', '');
     setRows([...rows, newRow]);
+    handlePostPatient();
   };
 
   // Delete selected rows and update pagination
@@ -321,7 +339,9 @@ export default function Input() {
         ...patient,
         id: index + 1,
         name: patient[1] || 'No Name', // Default value if undefined
-        information: "BMI: " + patient[4] + " HR: " +patient[5] +" BP: " + patient[6] || 'No Information',
+        BMI: patient[4] || 'No BMI',
+        HR: patient[5] || 'No HR',
+        BP: patient[6] || 'No BP',
         specialist: patient[2]|| 'No Specialist',
         patientRisk: patient[3] || 'TBD',
         uuid: patient[0]
@@ -335,7 +355,7 @@ export default function Input() {
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'left', minHeight: '100vh' }}>
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
         <Paper sx={{ width: '80%', mb: 2 }}>
-          <EnhancedTableToolbar numSelected={selected.length} addRow={addRow} deleteRow={deleteRow} handlePostPatient = {handlePostPatient}/>
+          <EnhancedTableToolbar numSelected={selected.length} addRow={addRow} deleteRow={deleteRow}/>
           <TableContainer>
             <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium'}>
               <EnhancedTableHead
@@ -361,11 +381,11 @@ export default function Input() {
                           }}
                         />
                       </TableCell>
-                      {['name', 'information', 'specialist'].map((field) => (
+                      {['name', 'BMI', 'HR', 'BP', 'specialist'].map((field) => (
                         <TableCell
                         key={field}
                         onClick={() => handleCellClick(row.id, field as keyof Data)}
-                        align={field === 'specialist' ? 'right' : field === 'information' ? 'right' : 'left'}
+                        align={field === 'specialist' ? 'right' : field === 'BMI' ? 'right' : 'left'}
                       >
                         {editingCell?.id === row.id && editingCell.field === field ? (
                           <TextField
