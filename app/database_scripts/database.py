@@ -5,7 +5,7 @@ import sqlite3
 import uuid
 
 DATABASE_URL = (
-    "/Users/kevin/Desktop/hackathon/proj/app/database_scripts/hospital_database.sqlite"
+    "/Users/zaeem/Desktop/HackPrinceton 2024/hackprinceton2024/app/database_scripts/hospital_database.sqlite"
 )
 
 
@@ -39,11 +39,17 @@ def insert_patient(
     bmi=None,
     heart_rate=None,
     blood_pressure=None,
+    age=None,
+    hospitalizations_in_last_year=None,
+    previous_surgeries=None,
+    cholestoral_level=None,
+    respiratory_rate=None
+
 ):
     patient_id = generate_uuid()
     sql_statement = """
-        INSERT INTO Patient (patient_id, patient_name, specialist_type, risk_score, bmi, heart_rate, blood_pressure)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO Patient (patient_id, patient_name, specialist_type, risk_score, bmi, heart_rate, blood_pressure, age, hospitalizations_in_last_year, previous_surgeries, cholestoral_level, respiratory_rate)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """
     params = (
         patient_id,
@@ -53,6 +59,11 @@ def insert_patient(
         bmi,
         heart_rate,
         blood_pressure,
+        age,
+        hospitalizations_in_last_year, 
+        previous_surgeries, 
+        cholestoral_level, 
+        respiratory_rate
     )
     fetch(sql_statement, params)
     return patient_id
@@ -146,6 +157,11 @@ def update_patient(
     bmi=None,
     heart_rate=None,
     blood_pressure=None,
+    age=None,
+    hospitalizations_in_last_year=None,
+    previous_surgeries=None,
+    cholestoral_level=None,
+    respiratory_rate=None
 ):
     updates = []
     params = []
@@ -168,7 +184,22 @@ def update_patient(
     if blood_pressure:
         updates.append("blood_pressure = ?")
         params.append(blood_pressure)
-
+    if age:
+        updates.append("age = ?")
+        params.append(age)
+    if hospitalizations_in_last_year:
+        updates.append("hospitalizations_in_last_year = ?")
+        params.append(hospitalizations_in_last_year)
+    if previous_surgeries:
+        updates.append("previous_surgeries = ?")
+        params.append(previous_surgeries)
+    if cholestoral_level:
+        updates.append("cholestoral_level = ?")
+        params.append(cholestoral_level)
+    if respiratory_rate:
+        updates.append("respiratory_rate = ?")
+        params.append(respiratory_rate)
+    
     if updates:
         sql_statement = f"UPDATE Patient SET {', '.join(updates)} WHERE patient_id = ?"
         params.append(patient_id)
@@ -238,21 +269,34 @@ def delete_specialist(specialist_id):
 
 
 def main():
+    # patients = [
+    #     ("Alice Smith", "Cardiologist", 8.5, 24.5, 72, "120/80"),
+    #     ("Bob Johnson", "Orthopedic", 5.2, 29.4, 78, "130/85"),
+    #     ("Clara Davis", "Neurologist", 7.1, 22.3, 65, "118/75"),
+    #     ("David Martinez", "Cardiologist", 9.2, 30.1, 80, "140/90"),
+    #     ("Eva Green", "Orthopedic", 4.8, 27.6, 74, "125/82"),
+    #     ("Frank Moore", "Neurologist", 6.5, 23.8, 68, "117/78"),
+    #     ("Grace Lee", "Cardiologist", 6.9, 26.1, 75, "122/82"),
+    #     ("Henry Kim", "Orthopedic", 7.3, 28.0, 70, "128/84"),
+    #     ("Ivy Wilson", "Neurologist", 6.2, 25.7, 66, "119/76"),
+    #     ("Jack Brown", "Cardiologist", 8.0, 24.0, 73, "121/79"),
+    #     ("Karen Adams", "Orthopedic", 5.9, 27.5, 77, "126/83"),
+    #     ("Liam Scott", "Neurologist", 7.5, 23.9, 64, "115/72"),
+    # ]
     patients = [
-        ("Alice Smith", "Cardiologist", 8.5, 24.5, 72, "120/80"),
-        ("Bob Johnson", "Orthopedic", 5.2, 29.4, 78, "130/85"),
-        ("Clara Davis", "Neurologist", 7.1, 22.3, 65, "118/75"),
-        ("David Martinez", "Cardiologist", 9.2, 30.1, 80, "140/90"),
-        ("Eva Green", "Orthopedic", 4.8, 27.6, 74, "125/82"),
-        ("Frank Moore", "Neurologist", 6.5, 23.8, 68, "117/78"),
-        ("Grace Lee", "Cardiologist", 6.9, 26.1, 75, "122/82"),
-        ("Henry Kim", "Orthopedic", 7.3, 28.0, 70, "128/84"),
-        ("Ivy Wilson", "Neurologist", 6.2, 25.7, 66, "119/76"),
-        ("Jack Brown", "Cardiologist", 8.0, 24.0, 73, "121/79"),
-        ("Karen Adams", "Orthopedic", 5.9, 27.5, 77, "126/83"),
-        ("Liam Scott", "Neurologist", 7.5, 23.9, 64, "115/72"),
+    ("Alice Smith", "Cardiologist", 8.5, 24.5, 72, "120/80", 52, 1, 2, 190, 16),
+    ("Bob Johnson", "Orthopedic", 5.2, 29.4, 78, "130/85", 45, 0, 1, 180, 18),
+    ("Clara Davis", "Neurologist", 7.1, 22.3, 65, "118/75", 60, 2, 3, 200, 15),
+    ("David Martinez", "Cardiologist", 9.2, 30.1, 80, "140/90", 55, 3, 1, 230, 20),
+    ("Eva Green", "Orthopedic", 4.8, 27.6, 74, "125/82", 40, 0, 0, 170, 16),
+    ("Frank Moore", "Neurologist", 6.5, 23.8, 68, "117/78", 58, 1, 2, 210, 17),
+    ("Grace Lee", "Cardiologist", 6.9, 26.1, 75, "122/82", 47, 1, 1, 180, 16),
+    ("Henry Kim", "Orthopedic", 7.3, 28.0, 70, "128/84", 49, 0, 0, 190, 19),
+    ("Ivy Wilson", "Neurologist", 6.2, 25.7, 66, "119/76", 62, 2, 1, 185, 15),
+    ("Jack Brown", "Cardiologist", 8.0, 24.0, 73, "121/79", 54, 1, 3, 200, 17),
+    ("Karen Adams", "Orthopedic", 5.9, 27.5, 77, "126/83", 42, 0, 1, 175, 18),
+    ("Liam Scott", "Neurologist", 7.5, 23.9, 64, "115/72", 59, 2, 2, 195, 15),
     ]
-
     specialists = [
         ("Cardiologist", "Dr. Emily Carter"),
         ("Cardiologist", "Dr. George Wang"),
@@ -267,11 +311,12 @@ def main():
     specialist_ids = {}
 
     for patient in patients:
-        patient_name, specialist_type, risk_score, bmi, heart_rate, blood_pressure = (
+        patient_name, specialist_type, risk_score, bmi, heart_rate, blood_pressure, age, hospitalizations_in_last_year, previous_surgeries, cholestoral_level, respiratory_rate  = (
             patient
         )
         patient_id = insert_patient(
-            patient_name, specialist_type, risk_score, bmi, heart_rate, blood_pressure
+            patient_name, specialist_type, risk_score, bmi, heart_rate, blood_pressure, age, hospitalizations_in_last_year, previous_surgeries, cholestoral_level, 
+        respiratory_rate
         )
         patient_ids[patient_name] = (patient_id, specialist_type)
 
