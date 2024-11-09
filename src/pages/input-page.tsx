@@ -21,6 +21,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { visuallyHidden } from '@mui/utils';
 import TextField from '@mui/material/TextField'; 
+import { Button } from "../components/ui/button";
 import {api} from "../api/api";
 
 interface Data {
@@ -263,9 +264,30 @@ export default function Input() {
   const saveCell = () => {
     if (editingCell) {
       const { id, field } = editingCell;
-      setRows((prevRows) =>
-        prevRows.map((row) => (row.id === id ? { ...row, [field]: editedRow[field] } : row))
-      );
+      setRows((prevRows) => {
+        const updatedRows = prevRows.map((row) =>
+          row.id === id ? { ...row, [field]: editedRow[field] } : row
+        );
+  
+        // Call handleEditPatient with the updated row data immediately after updating rows
+        const editedCol = updatedRows.find((row) => row.id === id);
+        editPatient({
+            data: {
+            patient_id: editedCol.uuid,
+            patient_name: editedCol.name || 'No Name',
+            bmi: editedCol.BMI || 'No BMI',
+            heart_rate:editedCol.HR || 'No HR',
+            blood_pressure:editedCol.BP || 'No BP',
+            specialist_type: editedCol.specalist || 'No Specialist',
+            risk_score: editedCol.patientRisk || 'TBD',
+          }
+        });
+  
+        return updatedRows;
+      });
+
+      console.log(id, field)
+      // handleEditChange()
       setEditingCell(null);
       setEditedRow({});
     }
@@ -385,7 +407,7 @@ export default function Input() {
                         <TableCell
                         key={field}
                         onClick={() => handleCellClick(row.id, field as keyof Data)}
-                        align={field === 'specialist' ? 'right' : field === 'BMI' ? 'right' : 'left'}
+                        align={field === 'name' ? 'left' : 'right'}
                       >
                         {editingCell?.id === row.id && editingCell.field === field ? (
                           <TextField
@@ -428,6 +450,9 @@ export default function Input() {
             label="Dense padding"
             sx={{ marginLeft: 0 }}
           />
+
+          <Button>Submit Data</Button>
+
         </Box>
       </Box>
     </div>
