@@ -28,6 +28,7 @@ multiaddr = "^0.0.9"
 p2pnetwork = "^1.2"
 pythonp2p = "^1.7.1"
 pycryptodome = "^3.21.0"
+mpyc = "^0.10"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -118,3 +119,8 @@ docstring-code-format = false
 # This only has an effect when the `docstring-code-format` setting is
 # enabled.
 docstring-code-line-length = "dynamic"
+
+[tool.ruff.lint]
+ignore = [
+    "E731"
+]
