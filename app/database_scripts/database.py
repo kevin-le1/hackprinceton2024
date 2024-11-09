@@ -245,7 +245,7 @@ def main():
             ]
             
             # Insert into Scheduling
-            insert_scheduling(patient_id, assigned_specialist_id, order_in_queue_tracker[specialist_type])
+            insert_scheduling(patient_id, order_in_queue_tracker[specialist_type], assigned_specialist_id)
             
             # Increment order in queue
             order_in_queue_tracker[specialist_type] += 1
@@ -263,6 +263,11 @@ def main():
 
     scheduling_for_cardio = fetch_patients_by_specialist_type("Cardiologist")
     print(f"Scheduling for cardio: {scheduling_for_cardio}")
-
+    print()
+    scheduling_for_orthopedic = fetch_patients_by_specialist_type("Orthopedic")
+    print(f"Scheduling for ortho: {scheduling_for_orthopedic}")
+    print()
+    scheduling_for_neuro = fetch_patients_by_specialist_type("Neurologist")
+    print(f"Scheduling for neuro: {scheduling_for_neuro}")
 if __name__ == '__main__':
     main()
