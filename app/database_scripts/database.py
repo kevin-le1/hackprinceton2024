@@ -25,7 +25,7 @@ def generate_uuid():
     return str(uuid.uuid4())
 
 # Function to insert a new patient
-def insert_patient(patient_name, specialist_type, risk_score, bmi, heart_rate, blood_pressure):
+def insert_patient(patient_name= None, specialist_type=None, risk_score=None, bmi=None, heart_rate=None, blood_pressure=None):
     patient_id = generate_uuid()
     sql_statement = '''
         INSERT INTO Patient (patient_id, patient_name, specialist_type, risk_score, bmi, heart_rate, blood_pressure)

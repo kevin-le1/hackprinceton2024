@@ -8,12 +8,17 @@ ns = Blueprint("patient", "patient", url_prefix="/patient", description="patient
 def get_patient_data():
     return fetch_all_patients()
 
-@ns.route("")
+@ns.route("", methods=["POST"])
 def post_patient():
     insert_patient()
-    return
+    return {"message": "Patient inserted successfully"}, 201
 
-@ns.route("/<string:patient_id>")
-def delete_patient(patient_id):
+@ns.route("/<string:patient_id>", methods=["DELETE"])
+def delete_patient_route(patient_id):
     delete_patient(patient_id)
-    return
+    return {"message": f"Patient with ID {patient_id} deleted successfully"}, 204
+
+@ns.route("/<string:document_id>", methods=["PUT"])
+def edit_patient(patient_id):
+    delete_patient(patient_id)
+    return {"message": f"Patient with ID {patient_id} edited successfully"}, 204
