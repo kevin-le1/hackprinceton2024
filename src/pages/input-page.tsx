@@ -278,7 +278,7 @@ export default function Input() {
             bmi: editedCol.BMI || 'No BMI',
             heart_rate:editedCol.HR || 'No HR',
             blood_pressure:editedCol.BP || 'No BP',
-            specialist_type: editedCol.specalist || 'No Specialist',
+            specialist_type: editedCol.specialist || 'No Specialist',
             risk_score: editedCol.patientRisk || 'TBD',
           }
         });
@@ -334,6 +334,9 @@ export default function Input() {
   // PUT updates a patient giving the person new information
   const [editPatient] = api.endpoints.editPatient.useMutation();
 
+  // POST to update risk score
+  const [editRisk] = api.endpoints.startInference.useMutation();
+
   // Post a patient
   const handlePostPatient = async () => {
     try {
@@ -370,6 +373,14 @@ export default function Input() {
       })));
     }
   }, [patients]);
+
+  const handlePostInference = async () => {
+    try {
+      await editRisk();
+    } catch (error) {
+      console.error('Failed to editRisk:', error);
+    }
+  }
 
 
 
@@ -445,13 +456,26 @@ export default function Input() {
         </Paper>
 
         <Box sx={{ width: '80%', display: 'flex', justifyContent: 'space-between', alignItems: 'left', mt: 2 }}>
-          <FormControlLabel
-            control={<Switch checked={dense} onChange={(event) => setDense(event.target.checked)} />}
-            label="Dense padding"
-            sx={{ marginLeft: 0 }}
-          />
+        <FormControlLabel
+          control={
+            <Switch
+              checked={dense}
+              onChange={(event) => setDense(event.target.checked)}
+              sx={{
+                '& .MuiSwitch-switchBase.Mui-checked': {
+                  color: 'gray',
+                },
+                '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                  backgroundColor: 'gray',
+                },
+              }}
+            />
+          }
+          label="Dense padding"
+          sx={{ marginLeft: 0 }}
+        />
 
-          <Button>Submit Data</Button>
+          <Button onClick = {handlePostInference}>Submit Data</Button>
 
         </Box>
       </Box>

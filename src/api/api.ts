@@ -49,6 +49,14 @@ export const api = createApi({
         invalidatesTags: ["Patient"],
       }),
     }),
+    startInference: builder.mutation<void, void>({
+      query: () => ({
+        url: "/patient/inference",
+        method: "POST",
+        body: {},
+      }),
+      invalidatesTags: ["Patient"],
+    }),
   }),
 });
 
