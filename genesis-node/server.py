@@ -1,33 +1,36 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify, request
 from flask_socketio import SocketIO, emit
+from flask_cors import CORS
 
 app = Flask(__name__)
-socketio = SocketIO(app)  # Initialize SocketIO with Flask
+CORS(app)  # Enable CORS for all routes
+socketio = SocketIO(app, cors_allowed_origins="*")  # Allow all origins
 
 # Dictionary to store IP addresses with a counter as the key
 ip_addresses = {}
 node_counter = 0  # Initialize node counter
 
-@app.route('/add_ip', methods=['POST'])
-def receive_ip():
+@socketio.on('connect')
+def handle_connect():
     global node_counter  # To modify the global variable
-    ip_address = request.remote_addr
+
+    # Capture the IP address of the connected client
+    ip_address = request.environ.get('REMOTE_ADDR')
     
     # Store the IP address in the dictionary with the current counter as the key
     ip_addresses[node_counter] = ip_address
     node_counter += 1  # Increment the counter for the next entry
-    print(ip_addresses)  # For server-side logging
-    
-    # Broadcast the updated IP addresses to all connected clients
-    socketio.emit('update_ip_addresses', ip_addresses)
-    
-    return jsonify({'status': 'success', 'node number': node_counter, 'ip': ip_address}), 200
 
-@socketio.on('connect')
-def handle_connect():
-    # Send the current IP addresses to the newly connected client
-    emit('update_ip_addresses', ip_addresses)
+    print("Updated IP addresses:", ip_addresses)  # For server-side logging
+    
+    # Send the updated IP addresses to all connected clients
+    socketio.emit('update_ip_addresses', ip_addresses)
+    print("Client connected with IP:", ip_address)
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print("Client disconnected.")
 
 if __name__ == '__main__':
-    # Use eventlet as the WebSocket server
+    # Run the WebSocket server
     socketio.run(app, host="10.49.158.119", port=5000, debug=True)
