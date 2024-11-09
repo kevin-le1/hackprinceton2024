@@ -1,5 +1,6 @@
 from flask_smorest import Blueprint
-from app.database_scripts.database import fetch_all_patients, insert_patient, delete_patient
+from app.database_scripts.database import fetch_all_patients, insert_patient, delete_patient, update_patient
+from flask import request
 
 ns = Blueprint("patient", "patient", url_prefix="/patient", description="patient")
 
@@ -18,7 +19,17 @@ def delete_patient_route(patient_id):
     delete_patient(patient_id)
     return {"message": f"Patient with ID {patient_id} deleted successfully"}, 204
 
-@ns.route("/<string:document_id>", methods=["PUT"])
-def edit_patient(patient_id):
-    delete_patient(patient_id)
-    return {"message": f"Patient with ID {patient_id} edited successfully"}, 204
+@ns.route("/", methods=["PUT"])
+def edit_patient():
+    json = request.get_json()
+    data = json.get("data")
+    update_patient(
+        data["patient_id"],
+        data["patient_name"],
+        data["specialist_type"],
+        data["risk_score"],
+        data["bmi"],
+        data["heart_rate"],
+        data["blood_pressure"],
+    )
+    return {"message": f"Patient with ID {data} edited successfully"}, 204

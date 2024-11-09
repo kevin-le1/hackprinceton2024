@@ -33,9 +33,9 @@ export const api = createApi({
       query: () => "/patient/all",
       providesTags: ["Patient"],
     }),
-    editPatient: builder.mutation<void, { patientId: UUID; data: Patient }>({
+    editPatient: builder.mutation<void, { data: Patient }>({
         query: (data) => ({
-            url: `/patient/${data.patientId}`,
+            url: `/patient/`,
             method: "PUT",
             body: data,
             invalidatesTags: ["Patient"],
