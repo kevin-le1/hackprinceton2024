@@ -29,6 +29,8 @@ p2pnetwork = "^1.2"
 pythonp2p = "^1.7.1"
 pycryptodome = "^3.21.0"
 mpyc = "^0.10"
+ollama = "^0.3.3"
+pandas = "^2.2.3"
 
 
 [tool.poetry.group.dev.dependencies]

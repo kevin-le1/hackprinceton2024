@@ -20,7 +20,12 @@ cursor.execute('''
         risk_score REAL,
         bmi REAL,
         heart_rate INTEGER,
-        blood_pressure TEXT
+        blood_pressure TEXT,
+        age INTEGER,
+        hospitalizations_in_last_year INTEGER,
+        previous_surgeries INTEGER,
+        cholestoral_level INTEGER,
+        respiratory_rate INTEGER
     )
 ''')
 
