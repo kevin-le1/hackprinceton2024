@@ -1,6 +1,7 @@
 from collections import defaultdict
-from typing import List, Tuple
 from mpyc.runtime import mpc
+
+from app.database_scripts.database import fetch_patient_for_job
 
 type UUID = str
 
@@ -38,21 +39,16 @@ async def sort(*data):
 ht = {
     "Cardiologist": 1,
     "Orthopedic": 2,
+    "Neurologist": 3,
 }
 
 lookup_key = lambda v, h: "".join([k1 for k1, v1 in h.items() if v1 == v])
 
 
-async def main():
+async def main(data):
     secnum = mpc.SecInt(64)
     m = len(mpc.parties)
     peers = list(range(m))
-
-    client_data: List[List[Tuple[int, str, int]]] = [
-        [(1, "Cardiologist", 80), (2, "Orthopedic", 3)],
-        [(1, "Orthopedic", 50), (2, "Cardiologist", 2)],
-        [(1, "Orthopedic", 81), (2, "Cardiologist", 10)],
-    ]
 
     await mpc.start()
     # dont do list of lists to make sending input easier (maybe change)
@@ -60,10 +56,11 @@ async def main():
     # to_int = lambda s: int.from_bytes(s.encode(), "big")
     to_int = lambda s: ht.get(s, 0)
     serialize = lambda data: [
-        [id(idx), secnum(to_int(it[1])), secnum(it[2])] for idx, it in enumerate(data)
+        [id(idx), secnum(to_int(it[1])), secnum(int(it[2] * 100))]
+        for idx, it in enumerate(data)
     ]
 
-    myinput = serialize(client_data[mpc.pid])
+    myinput = serialize(data)
     inputs = mpc.input(flatten(myinput), senders=peers)
     # print(
     #     f"Node {mpc.pid} secure inputs:", aggregate(await mpc.output(flatten(inputs)))
@@ -96,9 +93,8 @@ async def main():
         # print(i, tag)
         if tag // 100 == mpc.pid:
             client_idx = tag - (mpc.pid * 100)
-            print(specialist)
-            res[specialist].append((c, client_data[mpc.pid][client_idx][0]))
-            print(c, client_data[mpc.pid][client_idx])
+            res[specialist].append((c, data[client_idx][0]))
+            print(f"{c}: {data[client_idx][0]},{data[client_idx][1]}")
         prev = it[1]
         c += 1
 
@@ -114,10 +110,26 @@ async def main():
     #     c += 1
     #     prev = g[1]
 
-    print(res)
-
     await mpc.shutdown()
+
+    return res
 
 
 if __name__ == "__main__":
-    mpc.run(main())
+    data = fetch_patient_for_job()
+    # client_data: List[List[Tuple[int, str, int]]] = [
+    #     [(1, "Cardiologist", 80), (2, "Orthopedic", 3)],
+    #     [(1, "Orthopedic", 50), (2, "Cardiologist", 2)],
+    #     [(1, "Orthopedic", 81), (2, "Cardiologist", 10)],
+    # ]
+
+    # data = client_data[mpc.pid]
+
+    res = mpc.run(main(data))
+
+    # now insert into database/ zaeem's code
+
+# 1. invoke function instead of running cmdline
+# 2. take HT state -> generate a command
+#   python file.py -I0 -P localhost [...rest]
+#   python file.py -I1 -P ip[0] -P localhost [...rest]
