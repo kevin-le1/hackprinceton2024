@@ -37,7 +37,7 @@ async def main():
         [id(idx), secnum(to_int(it[0])), secnum(it[1])]
         for idx, it in enumerate(client_data[mpc.pid])
     ]
-    inputs = mpc.input(flatten(myinput), senders=peers)
+    inputs = mpc.input(flatten(myinput))
 
     union = aggregate(flatten(inputs), 3)
     sorted_union = await sort(union, k=2)
