@@ -124,6 +124,14 @@ def fetch_all_specialists():
     sql_statement = "SELECT * FROM Specialist"
     return fetch(sql_statement, [])
 
+def fetch_specialists_by_type(specialist_type):
+    sql_statement = '''
+        SELECT specialist_id, specialist_name
+        FROM Specialist
+        WHERE specialist_type = ?
+    '''
+    params = (specialist_type,)
+    return fetch(sql_statement, params)
 
 # Function to fetch patient matching info for specified specialist typ
 def fetch_patients_by_specialist_type(specialist_type):
@@ -267,22 +275,62 @@ def delete_specialist(specialist_id):
     params = (specialist_id,)
     fetch(sql_statement, params)
 
+def clear_all_tables():
+    try:
+        with sqlite3.connect(DATABASE_URL, isolation_level=None, uri=True) as connection:
+            with contextlib.closing(connection.cursor()) as cursor:
+                # Disable foreign key constraints temporarily to avoid issues with foreign key dependencies
+                cursor.execute("PRAGMA foreign_keys = OFF")
+                
+                # Clear all tables
+                cursor.execute("DELETE FROM Patient")
+                cursor.execute("DELETE FROM Specialist")
+                cursor.execute("DELETE FROM Scheduling")
+                
+                # Re-enable foreign key constraints
+                cursor.execute("PRAGMA foreign_keys = ON")
+                
+                print("All tables cleared successfully.")
+    except Exception as ex:
+        print(f"Error clearing tables: {ex}")
+
+def round_robin_schedule(specialist_patient_map):
+    """
+    Schedule patients with specialists in a round-robin fashion based on order_in_queue.
+
+    Args:
+    specialist_patient_map (dict): A dictionary where each key is a specialist type (str),
+                                   and each value is a list of tuples where tuple[0] is the order_in_queue
+                                   and tuple[1] is the patient_id.
+
+    Example input:
+    {'Cardiologist': [(2, 1), (1, 897), (3, 36)], 'Orthopedic': [(0, 2), (2, 48)]}
+    """
+
+    # Iterate through each specialist type in the input dictionary
+    for specialist_type, patient_queue in specialist_patient_map.items():
+        # Fetch all specialists of the given type
+        specialists = fetch_specialists_by_type(specialist_type)
+        if not specialists:
+            print(f"No specialists found for type: {specialist_type}")
+            continue
+        
+        # Sort patients by order_in_queue
+        patient_queue.sort(key=lambda x: x[0])
+        
+        # Round-robin assign specialists to patients based on sorted order_in_queue
+        num_specialists = len(specialists)
+        for i, (order_in_queue, patient_id) in enumerate(patient_queue):
+            # Use round-robin to select a specialist
+            specialist_id, specialist_name = specialists[i % num_specialists]
+            
+            # Insert into the Scheduling table
+            insert_scheduling(patient_id, order_in_queue, specialist_id)
+
+    print("Round-robin scheduling completed.")
 
 def main():
-    # patients = [
-    #     ("Alice Smith", "Cardiologist", 8.5, 24.5, 72, "120/80"),
-    #     ("Bob Johnson", "Orthopedic", 5.2, 29.4, 78, "130/85"),
-    #     ("Clara Davis", "Neurologist", 7.1, 22.3, 65, "118/75"),
-    #     ("David Martinez", "Cardiologist", 9.2, 30.1, 80, "140/90"),
-    #     ("Eva Green", "Orthopedic", 4.8, 27.6, 74, "125/82"),
-    #     ("Frank Moore", "Neurologist", 6.5, 23.8, 68, "117/78"),
-    #     ("Grace Lee", "Cardiologist", 6.9, 26.1, 75, "122/82"),
-    #     ("Henry Kim", "Orthopedic", 7.3, 28.0, 70, "128/84"),
-    #     ("Ivy Wilson", "Neurologist", 6.2, 25.7, 66, "119/76"),
-    #     ("Jack Brown", "Cardiologist", 8.0, 24.0, 73, "121/79"),
-    #     ("Karen Adams", "Orthopedic", 5.9, 27.5, 77, "126/83"),
-    #     ("Liam Scott", "Neurologist", 7.5, 23.9, 64, "115/72"),
-    # ]
+    clear_all_tables()
     patients = [
     ("Alice Smith", "Cardiologist", 8.5, 24.5, 72, "120/80", 52, 1, 2, 190, 16),
     ("Bob Johnson", "Orthopedic", 5.2, 29.4, 78, "130/85", 45, 0, 1, 180, 18),
@@ -306,7 +354,7 @@ def main():
         ("Neurologist", "Dr. Michael Smith"),
     ]
 
-    # Populate Patient and Specialist tables
+    # Populate the Patient and Specialist tables
     patient_ids = {}
     specialist_ids = {}
 
@@ -327,29 +375,6 @@ def main():
             specialist_ids[specialist_type] = []
         specialist_ids[specialist_type].append((specialist_id, name))
 
-    # Populate the Scheduling table with order_in_queue for each patient-specialist match
-    order_in_queue_tracker = {}
-    for patient_name, (patient_id, specialist_type) in patient_ids.items():
-        if specialist_type not in order_in_queue_tracker:
-            order_in_queue_tracker[specialist_type] = 1
-
-        specialist_list = specialist_ids.get(specialist_type, [])
-        if specialist_list:
-            # Round-robin selection of specialists for the same type
-            assigned_specialist_id, specialist_name = specialist_list[
-                (order_in_queue_tracker[specialist_type] - 1) % len(specialist_list)
-            ]
-
-            # Insert into Scheduling
-            insert_scheduling(
-                patient_id,
-                order_in_queue_tracker[specialist_type],
-                assigned_specialist_id,
-            )
-
-            # Increment order in queue
-            order_in_queue_tracker[specialist_type] += 1
-
     patients = fetch_all_patients()
     specialist = fetch_all_specialists()
     scheduling = fetch_all_scheduling()
@@ -361,6 +386,12 @@ def main():
     print(f"Scheduling: {scheduling}")
     print()
 
+    specialist_patient_map = {"Cardiologist": [(2, '213bd1bd-198d-400d-905f-c8f7d55d92ea'), (4, '38dd04d9-f763-4bff-944a-a2e627234d1d'), (1, 'e72ac10b-efd3-4a77-bb98-9467ef3a2e0b'), (7, 'e0a3c3c0-013f-47fc-a335-157bc3f91f9b')], "Orthopedic": [], "Neurologist": []}
+    round_robin_schedule(specialist_patient_map)
+
+    scheduling = fetch_all_scheduling()
+    print(f"Scheduling: {scheduling}")
+    print()
     scheduling_for_cardio = fetch_patients_by_specialist_type("Cardiologist")
     print(f"Scheduling for cardio: {scheduling_for_cardio}")
     print()
@@ -373,3 +404,53 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
+# Populate Patient and Specialist tables
+    # patient_ids = {}
+    # specialist_ids = {}
+
+    # for patient in patients:
+    #     patient_name, specialist_type, risk_score, bmi, heart_rate, blood_pressure, age, hospitalizations_in_last_year, previous_surgeries, cholestoral_level, respiratory_rate  = (
+    #         patient
+    #     )
+    #     patient_id = insert_patient(
+    #         patient_name, specialist_type, risk_score, bmi, heart_rate, blood_pressure, age, hospitalizations_in_last_year, previous_surgeries, cholestoral_level, 
+    #     respiratory_rate
+    #     )
+    #     patient_ids[patient_name] = (patient_id, specialist_type)
+
+    # for specialist in specialists:
+    #     specialist_type, name = specialist
+    #     specialist_id = insert_specialist(specialist_type, name)
+    #     if specialist_type not in specialist_ids:
+    #         specialist_ids[specialist_type] = []
+    #     specialist_ids[specialist_type].append((specialist_id, name))
+
+    # # Populate the Scheduling table with order_in_queue for each patient-specialist match
+    # order_in_queue_tracker = {}
+    # for patient_name, (patient_id, specialist_type) in patient_ids.items():
+    #     if specialist_type not in order_in_queue_tracker:
+    #         order_in_queue_tracker[specialist_type] = 1
+
+    #     specialist_list = specialist_ids.get(specialist_type, [])
+    #     if specialist_list:
+    #         # Round-robin selection of specialists for the same type
+    #         assigned_specialist_id, specialist_name = specialist_list[
+    #             (order_in_queue_tracker[specialist_type] - 1) % len(specialist_list)
+    #         ]
+
+    #         # Insert into Scheduling
+    #         insert_scheduling(
+    #             patient_id,
+    #             order_in_queue_tracker[specialist_type],
+    #             assigned_specialist_id,
+    #         )
+
+    #         # Increment order in queue
+    #         order_in_queue_tracker[specialist_type] += 1
