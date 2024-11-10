@@ -1,15 +1,35 @@
-import { Routes, Route } from "react-router-dom"
-import Home from "../pages/home-page"
-import Input from "../pages/input-page"
-import Dash from "../pages/dash-page"
+import { Routes, Route } from "react-router-dom";
+import Input from "../pages/input-page";
+import Dash from "../pages/dash-page";
+import { ReactElement } from "react";
+import Home from "../pages/home-page";
+import Protected from "../_components/protected";
+
+interface RouteDef {
+  path: string;
+  component: ReactElement;
+  protected?: boolean;
+}
+
+const routes: RouteDef[] = [
+  { path: "/", component: <Home />, protected: false },
+  //
+  { path: "/patients", component: <Input /> },
+  { path: "/dashboard", component: <Dash /> },
+];
 
 export default function Router() {
-
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/patients" element={<Input />} />
-      <Route path="/dashboard" element={<Dash />} />
+      {routes.map((route) => {
+        const isProtected = route.protected ?? true;
+        const component = isProtected ? (
+          <Protected>{route.component}</Protected>
+        ) : (
+          route.component
+        );
+        return <Route path={route.path} element={component} />;
+      })}
     </Routes>
-  )
+  );
 }

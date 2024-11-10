@@ -1,12 +1,9 @@
 import React from "react";
 import { useSocket } from "./socket";
 
-const wsIp = "10.49.158.119";
-//const wsIp = "localhost";
-
 function JoinNetwork() {
   const { isConnected, ipAddresses, sendMessage } = useSocket(
-    `http://${wsIp}:5000`
+    `http://${import.meta.env.VITE_GENESIS_SERVER}:5000`
   );
 
   const handleSendMessage = () => {

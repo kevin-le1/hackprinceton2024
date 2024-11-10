@@ -2,14 +2,14 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 import api from "../api/api";
 
-export type IpAddress = { [idx: number]: string };
+export type IpAddresses = { [idx: number]: string };
 
 export const useSocket = (url: string) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   // const [ipAddresses, setIpAddresses] = useState<IpAddress[]>([]);
   const [isConnected, setIsConnected] = useState(false);
 
-  const ipAddresses = useRef<IpAddress>([]);
+  const ipAddresses = useRef<IpAddresses>([]);
 
   const [startJob] = api.endpoints.startJob.useMutation();
 
@@ -26,8 +26,6 @@ export const useSocket = (url: string) => {
     newSocket.on("update_ip_addresses", (data) => {
       console.log("updating ip", data);
       ipAddresses.current = data;
-      // console.log(ipAddresses.current);
-      // setIpAddresses(data);
     });
 
     newSocket.on("start_job", (data) => {

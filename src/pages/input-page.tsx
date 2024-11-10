@@ -18,6 +18,7 @@ import Tooltip from "@mui/material/Tooltip";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CalculateIcon from "@mui/icons-material/Calculate";
 import AddIcon from "@mui/icons-material/Add";
 import { visuallyHidden } from "@mui/utils";
 import TextField from "@mui/material/TextField";
@@ -210,12 +211,22 @@ function EnhancedTableToolbar(
 ) {
   const { numSelected, addRow, deleteRow } = props;
 
+  const [editRisk, { isLoading }] = api.endpoints.startInference.useMutation();
+
   const handleAddRow = () => {
     addRow();
   };
 
   const handleDeleteRow = () => {
     deleteRow();
+  };
+
+  const handlePostInference = async () => {
+    try {
+      await editRisk();
+    } catch (error) {
+      console.error("Failed to editRisk:", error);
+    }
   };
 
   return (
@@ -265,6 +276,12 @@ function EnhancedTableToolbar(
           <DeleteIcon />
         </IconButton>
       </Tooltip>
+
+      <Tooltip title="Compute Risk Scores">
+        <IconButton onClick={handlePostInference} disabled={isLoading}>
+          <CalculateIcon />
+        </IconButton>
+      </Tooltip>
     </Toolbar>
   );
 }
@@ -283,7 +300,21 @@ export default function Input() {
 
   // Add a new row
   const addRow = () => {
-    const newRow = createData(rows.length + 1, "", "", "", "", "", "", "", "");
+    const newRow = createData(
+      rows.length + 1,
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    );
     setRows([...rows, newRow]);
     handlePostPatient();
   };
@@ -467,32 +498,55 @@ export default function Input() {
           display: "flex",
           justifyContent: "center",
           alignItems: "left",
-          minHeight: "100vh",
-          paddingTop: "4rem",
+          height: "calc(100vh - 64px)", // Subtract navbar height
+          paddingTop: "7rem",
         }}
       >
         <Box
           sx={{
-            width: "90%",
+            width: "95%",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
             paddingLeft: "2rem",
             paddingRight: "2rem",
+            height: "100%",
           }}
         >
-          <Paper sx={{ width: "100%", mb: 2 }}>
+          {/* <Box
+            sx={{
+              width: "88vw",
+              display: "flex",
+              justifyContent: "flex-end",
+              mb: 2,
+            }}
+          >
+            <Button onClick={handlePostInference}>Compute Risk Scores</Button>
+          </Box> */}
+          <Paper
+            sx={{
+              width: "100%",
+              mb: 2,
+              display: "flex",
+              flexDirection: "column",
+              height: "100%",
+              border: "2px solid rgba(233, 128, 116, 0.6)", // Made border translucent
+              backgroundColor: "rgba(255, 255, 255, 0.9)", // Slightly transparent background
+              backdropFilter: "blur(5px)", // Adds subtle blur effect
+            }}
+          >
             <EnhancedTableToolbar
               numSelected={selected.length}
               addRow={addRow}
               deleteRow={deleteRow}
             />
-            <TableContainer>
+            <TableContainer sx={{ flexGrow: 1 }}>
               <Table
                 sx={{ minWidth: 750 }}
                 aria-labelledby="tableTitle"
                 size="small"
+                stickyHeader
               >
                 <EnhancedTableHead
                   numSelected={selected.length}
@@ -575,66 +629,6 @@ export default function Input() {
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
           </Paper>
-
-          <Box
-            sx={{
-              width: "80%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "left",
-              mt: 2,
-            }}
-          >
-            {/* <FormControlLabel
-          control={
-            <Switch
-              checked={dense}
-              onChange={(event) => setDense(event.target.checked)}
-              sx={{
-                '& .MuiSwitch-switchBase.Mui-checked': {
-                  color: 'gray',
-                },
-                '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-                  backgroundColor: 'gray',
-                },
-              }}
-            />
-          }
-          label="Dense padding"
-          sx={{ marginLeft: 0 }}
-        /> */}
-
-            <Box
-              sx={{
-                width: "80%",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "left",
-                mt: 2,
-              }}
-            >
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={dense}
-                    onChange={(event) => setDense(event.target.checked)}
-                    sx={{
-                      "& .MuiSwitch-switchBase.Mui-checked": {
-                        color: "gray",
-                      },
-                      "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
-                        {
-                          backgroundColor: "gray",
-                        },
-                    }}
-                  />
-                }
-                label="Dense padding"
-                sx={{ marginLeft: 0 }}
-              />
-              <Button onClick={handlePostInference}>Submit Data</Button>
-            </Box>
-          </Box>
         </Box>
       </div>
     </>

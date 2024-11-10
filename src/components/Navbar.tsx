@@ -92,7 +92,7 @@ export default function Navbar({ pageType }: any) {
                   pageType === "input" ? "underline" : ""
                 }`}
               >
-                Input
+                Patients
               </a>
             </nav>
             <div className="flex items-center gap-4">
@@ -142,7 +142,7 @@ export default function Navbar({ pageType }: any) {
                   pageType === "input" ? "underline" : ""
                 }`}
               >
-                Input
+                Patients
               </a>
             </nav>
             <div className="flex items-center gap-4">

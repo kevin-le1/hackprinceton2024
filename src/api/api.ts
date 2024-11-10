@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IpAddress } from "../_components/socket";
+import { IpAddresses } from "../_components/socket";
 type UUID = string;
 
 // patient_id, patient_name, specialist_type, risk_score, bmi, heart_rate, blood_pressure
@@ -64,7 +64,7 @@ export const api = createApi({
       invalidatesTags: ["Patient"],
     }),
 
-    startJob: builder.mutation<void, { ipAddresses: IpAddress[] }>({
+    startJob: builder.mutation<void, { ipAddresses: IpAddresses }>({
       query: (data) => ({
         url: "/job/start",
         method: "POST",
