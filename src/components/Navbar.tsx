@@ -8,7 +8,7 @@ export default function Navbar({ pageType }: any) {
   const handleLogin = async () => {
     await loginWithRedirect({
       appState: {
-        returnTo: "/patients",
+        returnTo: "/dashboard",
       },
     });
   };
