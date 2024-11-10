@@ -71,10 +71,10 @@ const Schedule = () => {
 
   return (
     <div>
-      <div style={styles.dropdownContainer}>
+      <div style={{ ...styles.dropdown, padding: '8px', border: 'none', outline: 'none', width: '400px' }}>
         <select
           className="text-black bg-white"
-          style={styles.dropdown}
+          style={{...styles.dropdown}}
           onChange={handleSpecialistChange}
           value={currentSpecialist}
         >
@@ -88,7 +88,7 @@ const Schedule = () => {
 
       {currentSpecialist && formattedData[currentSpecialist] && (
         <div>
-            <Table>
+            <Table className = "bg-white rounded-md">
             <TableCaption>The ordering of patients based on their overall ranking.</TableCaption>
             <TableHeader>
                 <TableRow>
@@ -100,9 +100,9 @@ const Schedule = () => {
             <TableBody>
                 {formattedData[currentSpecialist].map((item, index) => (
                 <TableRow key={index}>
-                <TableCell>{item.specialistName}</TableCell>
-                    <TableCell className="flex">{item.patientName}</TableCell>
-                    <TableCell className="font-medium text-right">{item.order}</TableCell>
+                <TableCell className = "text-black">{item.specialistName}</TableCell>
+                    <TableCell className="flex text-black">{item.patientName}</TableCell>
+                    <TableCell className="font-medium text-right text-black">{item.order}</TableCell>
 
                 </TableRow>
               ))}
