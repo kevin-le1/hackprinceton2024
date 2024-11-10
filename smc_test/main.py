@@ -37,7 +37,9 @@ async def sort(*data):
     to the mpc.SecInt. It shouldn't be considered in the sort, however.
     """
     together = [inner for outer in data for inner in outer]
-    result = mpc.sorted(together, key=lambda it: PatientData(it[1], it[2]))
+    result = mpc.sorted(
+        together, key=lambda it: PatientData(it[1], it[2]), reverse=True
+    )
     return result
 
 
@@ -99,7 +101,9 @@ async def main(data):
         if tag // 100 == mpc.pid:
             client_idx = tag - (mpc.pid * 100)
             res[specialist].append((c, data[client_idx][0]))
-            print(f"{c}: {data[client_idx][0]},{data[client_idx][1]}")
+            print(
+                f"{c}: {data[client_idx][0]},{data[client_idx][1]},{data[client_idx][2]}"
+            )
         prev = it[1]
         c += 1
 
