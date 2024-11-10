@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Label,
@@ -6,7 +6,7 @@ import {
   PolarRadiusAxis,
   RadialBar,
   RadialBarChart,
-} from "recharts"
+} from "recharts";
 
 import {
   Card,
@@ -15,9 +15,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card"
-import { ChartConfig, ChartContainer } from "./ui/chart"
-import api from "../api/api"
+} from "./ui/card";
+import { ChartConfig, ChartContainer } from "./ui/chart";
+import api from "../api/api";
 
 const chartConfig = {
   visitors: {
@@ -27,23 +27,25 @@ const chartConfig = {
     label: "Safari",
     color: "hsl(var(--chart-2))",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export default function Chart() {
-
   const totalVisitors = 100; // Total visitors for reference
 
   // GET receives all patient data, including UUID & refetching mechanism
   const { data: patients } = api.endpoints.getPatientAll.useQuery();
 
-
   const currentVisitors = patients ? patients.length : 0;
   const proportion = (currentVisitors / totalVisitors) * 100;
   const chartData = [
-    { browser: "safari", visitors: currentVisitors, fill: "var(--color-safari)" },
-  ]
+    {
+      browser: "safari",
+      visitors: currentVisitors,
+      fill: "var(--color-safari)",
+    },
+  ];
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col max-h-[350px]">
       <CardHeader className="items-center pb-0">
         <CardTitle>Hospital Load</CardTitle>
         <CardDescription>Current</CardDescription>
@@ -51,7 +53,7 @@ export default function Chart() {
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto aspect-square max-h-[220px]"
         >
           <RadialBarChart
             data={chartData}
@@ -64,7 +66,7 @@ export default function Chart() {
               gridType="circle"
               radialLines={false}
               stroke="none"
-              className="first:fill-muted last:fill-background"
+              className="first:fill-muted "
               polarRadius={[86, 74]}
             />
             <RadialBar dataKey="visitors" background cornerRadius={10} />
@@ -94,7 +96,7 @@ export default function Chart() {
                           / {totalVisitors} Visitors
                         </tspan>
                       </text>
-                    )
+                    );
                   }
                 }}
               />
@@ -109,5 +111,5 @@ export default function Chart() {
         <div>{totalVisitors} that can be taken care of.</div>
       </CardFooter>
     </Card>
-  )
+  );
 }
