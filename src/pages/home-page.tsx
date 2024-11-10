@@ -11,7 +11,6 @@ import { Button } from "../components/ui/button";
 
 import { useAuth0 } from "@auth0/auth0-react";
 
-
 interface ImageTextSectionProps {
   imageSrc: string;
   imageAlt: string;
@@ -38,7 +37,6 @@ const ImageTextSection = ({
       },
     },
   };
-
 
   return (
     <motion.div
@@ -98,7 +96,6 @@ const ImageTextSection = ({
 
 export default function Home() {
   const { loginWithRedirect } = useAuth0();
-
 
   const handleSignup = async () => {
     await loginWithRedirect({
@@ -166,7 +163,10 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8, duration: 0.8 }}
               >
-                <Button onClick = {handleSignup} className="bg-primary hover:bg-red2 text-white px-12 py-6 text-xl rounded-full transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                <Button
+                  onClick={handleSignup}
+                  className="bg-primary hover:bg-red2 text-white px-12 py-6 text-xl rounded-full transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                >
                   Get Started Today
                 </Button>
               </motion.div>
@@ -212,42 +212,55 @@ export default function Home() {
             </div>
           </motion.section>
 
+          <motion.section
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            className="px-8"
+          >
+            <div className="max-w-6xl mx-auto">
+              <h2 className="text-4xl md:text-5xl font-bold text-primary text-center">
+                How It Works
+              </h2>
+            </div>
+          </motion.section>
+
           <div className="w-full">
             <div className="space-y-8">
               <ImageTextSection
                 imageSrc="src/images/stage1.svg"
-                imageAlt="Real-time health monitoring"
-                title="Real-time Health Monitoring"
-                description="Our platform provides continuous health monitoring, allowing healthcare providers to track patient vitals and metrics in real-time. This immediate access to critical health data enables faster response times and better patient outcomes."
+                imageAlt="Connect Your Medicial Institution"
+                title="Connect Your Medicial Institution"
+                description="Participating medical institutions join a decentralized, peer-to-peer (P2P) network with other participating institutions in the same region; these entities work with the same medical specialists to provide necessary care to their patients."
               />
 
               <ImageTextSection
                 imageSrc="src/images/stage2.svg"
-                imageAlt="Healthcare specialists"
-                title="Connect with Specialists"
-                description="Access a network of qualified healthcare specialists who can provide expert care and consultation. Our platform makes it easy to schedule appointments and receive personalized medical attention."
+                imageAlt="Enable New Insights"
+                title="Enable New Insights"
+                description="Medical institutions input patient data to determine risk scores. Data and computations are kept on-device to guarantee privacy."
                 isImageLeft={false}
               />
 
               <ImageTextSection
                 imageSrc="src/images/stage3.svg"
-                imageAlt="Health analytics dashboard"
-                title="Smart Health Analytics"
-                description="Leverage our advanced analytics tools to predict and prevent potential health issues. Our AI-powered system analyzes patterns in your health data to provide actionable insights and early warnings."
+                imageAlt="Secure and Distributed Analytics"
+                title="Secure and Distributed Analytics"
+                description="We distribute Secure Multi-part Computation (SMC) across the P2P network to determine which patients need care the soonest. We know patient data is sensitive, so we ensure no other node can see patient data; instead data is encrypted locally and split into shares and distributed across the network."
               />
 
               <ImageTextSection
                 imageSrc="src/images/stage4.svg"
-                imageAlt="Health analytics dashboard"
-                title="Smart Health Analytics"
-                description="Leverage our advanced analytics tools to predict and prevent potential health issues. Our AI-powered system analyzes patterns in your health data to provide actionable insights and early warnings."
+                imageAlt="Creating a Global Queue with Only Local Information"
+                title="Creating a Global Queue with Only Local Information"
+                description="All participating medical institutions send their data (in the form of encrypted shares) to all other nodes in the network. All nodes then sort by patient risk score, in order to allocate the most immediate treatment with patients with the highest risk."
                 isImageLeft={false}
               />
               <ImageTextSection
                 imageSrc="src/images/stage5.svg"
-                imageAlt="Health analytics dashboard"
-                title="Smart Health Analytics"
-                description="Leverage our advanced analytics tools to predict and prevent potential health issues. Our AI-powered system analyzes patterns in your health data to provide actionable insights and early warnings."
+                imageAlt="Helping Patients Get the Care They Need"
+                title="Helping Patients Get the Care They Need"
+                description="Medicial institutions see their patients with their positions in the global queue, without ever knowing any other patient data. This enables the patients with the most immediate needs to get the care they deserve."
               />
             </div>
 
@@ -271,7 +284,7 @@ export default function Home() {
           </div>
         </main>
 
-        <footer className="bg-secondary/80 mt-16 py-12">
+        <footer className="bg-secondary/40 mt-16 py-12">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               <div>
