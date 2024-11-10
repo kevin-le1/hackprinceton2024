@@ -272,7 +272,7 @@ export default function Input() {
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const [rows, setRows] = React.useState<Data[]>([]);
   const [editingCell, setEditingCell] = React.useState<{ id: number; field: keyof Data } | null>(null);
@@ -449,7 +449,7 @@ export default function Input() {
         <Paper sx={{ width: '100%', mb: 2 }}>
           <EnhancedTableToolbar numSelected={selected.length} addRow={addRow} deleteRow={deleteRow}/>
           <TableContainer>
-            <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium'}>
+            <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size='small'>
               <EnhancedTableHead
                 numSelected={selected.length}
                 onSelectAllClick={(event) => {
@@ -504,7 +504,7 @@ export default function Input() {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25, 100]}
+            rowsPerPageOptions={[10, 25, 100]}
             component="div"
             count={rows.length}
             rowsPerPage={rowsPerPage}
@@ -515,7 +515,7 @@ export default function Input() {
         </Paper>
 
         <Box sx={{ width: '80%', display: 'flex', justifyContent: 'space-between', alignItems: 'left', mt: 2 }}>
-        <FormControlLabel
+        {/* <FormControlLabel
           control={
             <Switch
               checked={dense}
@@ -532,7 +532,7 @@ export default function Input() {
           }
           label="Dense padding"
           sx={{ marginLeft: 0 }}
-        />
+        /> */}
 
           <Button onClick = {handlePostInference}>Submit Data</Button>
 
