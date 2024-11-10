@@ -279,6 +279,19 @@ def delete_specialist(specialist_id):
     params = (specialist_id,)
     fetch(sql_statement, params)
 
+def clear_table(table_name):
+    try:
+        if not os.path.exists(DATABASE_URL):
+            raise Exception("Unable to open database file")
+        with sqlite3.connect(DATABASE_URL, isolation_level=None, uri=True) as connection:
+            connection.execute("PRAGMA foreign_keys = OFF;")  # Disable foreign key constraints
+            connection.execute(f"DELETE FROM {table_name};")  # Clear the specified table
+            connection.execute("PRAGMA foreign_keys = ON;")  # Re-enable foreign key constraints
+            print(f"Table {table_name} cleared successfully.")
+    except Exception as ex:
+        print(f"{sys.argv[0]}:", ex, file=sys.stderr)
+        sys.exit(1)
+
 def clear_all_tables():
     try:
         with sqlite3.connect(DATABASE_URL, isolation_level=None, uri=True) as connection:
@@ -431,53 +444,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-# Populate Patient and Specialist tables
-    # patient_ids = {}
-    # specialist_ids = {}
-
-    # for patient in patients:
-    #     patient_name, specialist_type, risk_score, bmi, heart_rate, blood_pressure, age, hospitalizations_in_last_year, previous_surgeries, cholestoral_level, respiratory_rate  = (
-    #         patient
-    #     )
-    #     patient_id = insert_patient(
-    #         patient_name, specialist_type, risk_score, bmi, heart_rate, blood_pressure, age, hospitalizations_in_last_year, previous_surgeries, cholestoral_level, 
-    #     respiratory_rate
-    #     )
-    #     patient_ids[patient_name] = (patient_id, specialist_type)
-
-    # for specialist in specialists:
-    #     specialist_type, name = specialist
-    #     specialist_id = insert_specialist(specialist_type, name)
-    #     if specialist_type not in specialist_ids:
-    #         specialist_ids[specialist_type] = []
-    #     specialist_ids[specialist_type].append((specialist_id, name))
-
-    # # Populate the Scheduling table with order_in_queue for each patient-specialist match
-    # order_in_queue_tracker = {}
-    # for patient_name, (patient_id, specialist_type) in patient_ids.items():
-    #     if specialist_type not in order_in_queue_tracker:
-    #         order_in_queue_tracker[specialist_type] = 1
-
-    #     specialist_list = specialist_ids.get(specialist_type, [])
-    #     if specialist_list:
-    #         # Round-robin selection of specialists for the same type
-    #         assigned_specialist_id, specialist_name = specialist_list[
-    #             (order_in_queue_tracker[specialist_type] - 1) % len(specialist_list)
-    #         ]
-
-    #         # Insert into Scheduling
-    #         insert_scheduling(
-    #             patient_id,
-    #             order_in_queue_tracker[specialist_type],
-    #             assigned_specialist_id,
-    #         )
-
-    #         # Increment order in queue
-    #         order_in_queue_tracker[specialist_type] += 1
