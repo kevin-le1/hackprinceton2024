@@ -174,38 +174,64 @@ export default function Home() {
             <div className="absolute inset-0 bg-[url('/images/dots.svg')] opacity-5"></div>
             <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent"></div>
           </motion.section>
-
           <motion.section
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="py-24 px-8"
+            className="py-24 px-8 bg-gradient-to-b from-secondary/10 to-transparent"
           >
-            <div className="max-w-6xl mx-auto">
-              <h2 className="text-4xl md:text-5xl font-bold text-primary text-center mb-16">
-                How It Works
+            <div className="max-w-6xl mx-auto text-center">
+              <h2 className="text-4xl md:text-5xl font-bold text-primary mb-8">
+                Patient Care ♥ Secure Computing
               </h2>
-              <div className="grid md:grid-cols-2 gap-16">
-                <div className="space-y-6">
-                  <h3 className="text-3xl font-bold text-primary">
-                    For Patients
+              <p className="text-xl text-black/80 mb-16 max-w-3xl mx-auto">
+                Using secure multipart computing, we help patients get the care
+                they need while keeping their data private
+              </p>
+              <div className="grid md:grid-cols-2 gap-16 max-w-4xl mx-auto">
+                <div className="space-y-6 bg-white/50 p-8 rounded-2xl shadow-lg">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg
+                      className="w-8 h-8 text-primary"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                      <path
+                        fillRule="evenodd"
+                        d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold text-primary">
+                    Risk Assessment
                   </h3>
-                  <ul className="space-y-4 text-xl text-black">
-                    <li>Register and create your health profile</li>
-                    <li>Connect with healthcare specialists</li>
-                    <li>Monitor your health metrics in real-time</li>
-                    <li>Receive personalized health insights</li>
+                  <ul className="space-y-4 text-lg text-black/80">
+                    <li>Calculate patient risk scores locally</li>
+                    <li>Encrypt sensitive health data</li>
+                    <li>Distribute encrypted data securely</li>
+                    <li>Maintain complete patient privacy</li>
                   </ul>
                 </div>
-                <div className="space-y-6">
-                  <h3 className="text-3xl font-bold text-primary">
-                    For Healthcare Providers
+                <div className="space-y-6 bg-white/50 p-8 rounded-2xl shadow-lg">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg
+                      className="w-8 h-8 text-primary"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold text-primary">
+                    Global Queue
                   </h3>
-                  <ul className="space-y-4 text-xl text-black">
-                    <li>Access comprehensive patient health data</li>
-                    <li>Monitor multiple patients efficiently</li>
-                    <li>Receive alerts for critical changes</li>
-                    <li>Collaborate with other specialists</li>
+                  <ul className="space-y-4 text-lg text-black/80">
+                    <li>Create region-wide patient queues</li>
+                    <li>Prioritize highest-risk patients</li>
+                    <li>Process using secure computation</li>
+                    <li>Optimize care across institutions</li>
                   </ul>
                 </div>
               </div>
@@ -277,7 +303,10 @@ export default function Home() {
                 Join thousands of patients and healthcare providers who trust
                 HealthSync for better health outcomes.
               </p>
-              <Button onClick = {handleSignup} className="bg-primary hover:bg-red2 text-white px-12 py-6 text-xl rounded-full transform transition hover:scale-105">
+              <Button
+                onClick={handleSignup}
+                className="bg-primary hover:bg-red2 text-white px-12 py-6 text-xl rounded-full transform transition hover:scale-105"
+              >
                 Sign Up Now
               </Button>
             </motion.section>
