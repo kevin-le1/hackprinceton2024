@@ -77,7 +77,7 @@ const Schedule = () => {
           padding: "8px",
           border: "none",
           outline: "none",
-          width: "400px",
+          width: "800px",
         }}
       >
         <select

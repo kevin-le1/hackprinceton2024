@@ -45,10 +45,10 @@ export default function Navbar({ pageType }: any) {
                 className="text-black hover:text-white hover:bg-stone-900"
                 onClick={handleLogin}
               >
-                Sign in
+                Login
               </Button>
               <Button
-                className="hover:text-black hover:bg-white"
+                className="text-black hover:text-white hover:bg-stone-900 bg-white"
                 size="sm"
                 onClick={handleSignup}
               >
