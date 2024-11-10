@@ -116,6 +116,39 @@ const Schedule = () => {
 };
 
 
+const styles = {
+  dropdownContainer: {
+    position: "relative",
+    width: "100%",
+    fill: "white"
+  },
+  dropdown: {
+    padding: "10px",
+    fontSize: "16px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+    marginTop: "10px",
+    zIndex: 10,
+    width: "100%",
+    fill: "white"
+  },
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+    marginTop: "20px",
+    color: "#000",
+  },
+  th: {
+    borderBottom: "1px solid #ddd",
+    padding: "8px",
+  },
+  td: {
+    borderBottom: "1px solid #ddd",
+    padding: "8px",
+    textAlign: "left",
+  },
+};
+
 export default Schedule;
 
 /*
