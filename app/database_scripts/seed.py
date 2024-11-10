@@ -11,7 +11,12 @@ DATABASE_URL = os.environ.get("DATABASE_URL", "")
 if DATABASE_URL == "":
     raise Exception("no database url configured")
 
-
+"""
+1: Zaeem
+2: Carter
+3: Kevin
+4: Eugene
+"""
 patients_user = {
     1: [
         ("Alice Smith", "Cardiologist", 0.85, 24.5, 72, "120/80", 52, 1, 2, 190, 16),
