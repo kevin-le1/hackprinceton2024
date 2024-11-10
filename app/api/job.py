@@ -1,4 +1,5 @@
 import subprocess
+import flask
 from flask_smorest import Blueprint
 from flask import jsonify, request
 
@@ -10,24 +11,25 @@ def consensus(ip_addresses):
     Generates a consensus command for each IP in the ip_addresses dictionary.
     Invokes each command using subprocess.
     """
-    for index, ip in ip_addresses.items():
-        # Build the command
-        command = ["python", "smc_test/main.py", f"-I{index}"]
+    ip = request.environ.get("REMOTE_ADDR")
+    index = int("".join([k for k, v in ip_addresses.items() if ip == v]))
+    # Build the command
+    command = ["python", "smc_test/main.py", f"-I{index}"]
 
-        # Add each IP to the command, setting localhost for the current IP
-        for other_index, other_ip in ip_addresses.items():
-            if other_index == index:
-                command.extend(["-P", "localhost"])
-            else:
-                command.extend(["-P", other_ip])
+    # Add each IP to the command, setting localhost for the current IP
+    for other_index, other_ip in ip_addresses.items():
+        if other_index == index:
+            command.extend(["-P", "localhost"])
+        else:
+            command.extend(["-P", other_ip])
 
-        print(f"Executing command for IP {ip}: {' '.join(command)}")
+    print(f"Executing command for IP {ip}: {' '.join(command)}")
 
-        try:
-            result = subprocess.run(command, capture_output=True, text=True)
-            print(result.stdout)
-        except Exception as e:
-            print(f"Error executing command for IP {ip}: {e}")
+    try:
+        result = subprocess.run(command, capture_output=True, text=True)
+        print(result.stdout)
+    except Exception as e:
+        print(f"Error executing command for IP {ip}: {e}")
 
 
 @ns.route("/start", methods=["POST"])
