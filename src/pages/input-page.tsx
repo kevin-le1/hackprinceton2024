@@ -330,7 +330,7 @@ export default function Input() {
             cholestoral_level: editedCol.cholestoral_level || 'No Cholestoral',
             respiratory_rate: editedCol.respiratory_rate || 'No Respiratory Rate',
             specialist_type: editedCol.specialist || 'No Specialist',
-            risk_score: editedCol.patientRisk || 'TBD',
+            risk_score: editedCol.patientRisk || 0,
           }
         });
   
@@ -419,7 +419,7 @@ export default function Input() {
         HR: patient[5] || 'No HR',
         BP: patient[6] || 'No BP',
         specialist: patient[2]|| 'No Specialist',
-        patientRisk: patient[3] || 'TBD',
+        patientRisk: patient[3] || 0,
         uuid: patient[0],
         age: patient[7] || 'No Age',
         hospitalizations_in_last_year: patient[8] || 'No Hospitalizations',
@@ -496,7 +496,7 @@ export default function Input() {
                           )}
                         </TableCell>
                       ))}
-                      <TableCell align="right">{row.patientRisk || 'TBD'}</TableCell>
+                      <TableCell align="right">{row.patientRisk || 0}</TableCell>
                     </TableRow>
                   );
                 })}
