@@ -85,43 +85,39 @@ import ollama
 def generateInference():
     # Fetch patients and create DataFrame
     patients = fetch_all_patients()
-    df = pd.DataFrame(
-        patients,
-        columns=[
-            "ID",
-            "Name",
-            "Specialty",
-            "Risk",
-            "BMI",
-            "HR",
-            "BP",
-            "Age",
-            "Hospitalizations in Last Year",
-            "Previous Surgeries",
-            "Cholestoral Level",
-            "Respiratory Rate",
-        ],
-    )
-    df = df.drop(columns=["ID", "Risk"])
+    df = pd.DataFrame(patients, columns=["ID", "Name", "Specialty", "Risk", "BMI", "HR", "BP", "Age", "Hospitalizations in Last Year", "Previous Surgeries", "Cholestoral Level", "Respiratory Rate"])
+    df = df.drop(columns=["Risk"])
     print(df)
 
     # Create a concise content prompt with essential details
-    content = f"""
+    content = f'''
     I am going to give you patient csv data please asses the risk score of these don't give the same risk score to
     anyone make sure these risk scores are actually distinguishable enought to determine who should be treated first. Don't give me a
-    function, you should calculate it on the spot and display it make values from 0 to 1. Only output the risk scores and nothing else.
+    function, you should calculate it on the spot and display it make values from 0 to 1. Only output the risk scores and their uuid nothing else.
+    In this format: - Patient with ID: uuid    Risk Score: score
 
     Patient Data:
     {df}
     
-    """
+    '''
     # Call the Ollama API with the cleaned prompt
     response = ollama.chat(
-        model="llama3.2", messages=[{"role": "user", "content": content}]
+        model='llama3.2',
+        messages=[{'role': 'user', 'content': content}]
     )
 
     # Extract and print the response content
-    print(response["message"]["content"])
+    message = response['message']['content']
+    print(message)
+    
+    # Extract UUID and risk score using regex
+    uuid_risk_pairs = re.findall(r'([a-f0-9-]{36})\s+.*?\s+([0-9.]+)', message)
+
+    # Convert to dictionary with UUID as key and risk score as value
+    uuid_risk_dict = {uuid: float(score) for uuid, score in uuid_risk_pairs}
+    print('done')
+    return uuid_risk_dict
+
 
 
 # generateInference()
