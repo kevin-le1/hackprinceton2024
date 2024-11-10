@@ -45,8 +45,8 @@ async def sort(*data):
 
 ht = {
     "Cardiologist": 1,
-    "Orthopedic": 2,
-    "Neurologist": 3,
+    "Hematologist": 2,
+    "Immunologist": 3,
 }
 
 lookup_key = lambda v, h: "".join([k1 for k1, v1 in h.items() if v1 == v])
