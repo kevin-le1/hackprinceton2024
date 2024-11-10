@@ -69,6 +69,37 @@ const Schedule = () => {
     setCurrentSpecialist(event.target.value);
   };
 
+  if (uniqueSpecialists.length == 0 && uniqueSpecialists != undefined) {
+    return (
+      <div>
+        <h2 className="text-black">No Specialists</h2>
+        <div style={styles.dropdownContainer}>
+          <select
+            className="text-black"
+            style={styles.dropdown}disabled>
+          </select>
+        </div>
+        <Table className="bg-white rounded-md">
+          <TableCaption>
+            No specialists were found.
+          </TableCaption>
+          <TableHeader>
+            <TableRow>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+              <TableRow>
+                <TableCell className="text-black">
+                  No Data
+                </TableCell>
+                
+              </TableRow>
+          </TableBody>
+        </Table>
+      </div>
+    );
+  }
+
   return (
     <div>
     <div style={styles.dropdownContainer}>
@@ -127,7 +158,7 @@ const styles = {
     position: "relative",
     width: "100%",
     paddingBottom: "10px",
-    marginTop: '-6.2%',
+    marginTop: '-4.2%',
   },
   dropdown: {
     padding: "6px 12px",
@@ -138,7 +169,7 @@ const styles = {
     color: "#333",
     boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
     outline: "none",
-    width: "600px",
+    width: "700px",
     maxHeight: "50px",
   },
   tableContainer: {
@@ -149,30 +180,3 @@ const styles = {
 };
 
 export default Schedule;
-
-/*
-  if (uniqueSpecialists.length == 0 && uniqueSpecialists != undefined) {
-    return (
-      <div>
-        <h2 className="text-black">Select a Specialist</h2>
-        <div style={styles.dropdownContainer}>
-          <select style={styles.dropdown} disabled>
-            <option>No specialists available</option>
-          </select>
-        </div>
-        <table style={styles.table}>
-          <thead>
-            <tr>
-              <th>Data Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>No data</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    );
-  }
-*/
