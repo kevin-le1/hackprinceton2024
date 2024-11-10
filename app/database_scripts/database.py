@@ -149,7 +149,8 @@ def fetch_all_scheduling_with_details():
             Scheduling.order_in_queue,
             Specialist.specialist_name,
             Specialist.specialist_type,
-            Patient.patient_name
+            Patient.patient_name,
+            Scheduling.patient_id
         FROM 
             Scheduling
         INNER JOIN 
