@@ -1,9 +1,12 @@
 import React from "react";
 import { useSocket } from "./socket";
 
+// const wsIp = "10.49.45.229";
+const wsIp = "localhost";
+
 function JoinNetwork() {
   const { isConnected, ipAddresses, sendMessage } = useSocket(
-    "http://localhost:5000"
+    `http://${wsIp}:5000`
   );
 
   const handleSendMessage = () => {
