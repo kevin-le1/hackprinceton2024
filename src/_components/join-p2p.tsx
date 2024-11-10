@@ -22,8 +22,6 @@ function JoinNetwork() {
     `http://${import.meta.env.VITE_GENESIS_SERVER}:5000`
   );
 
-  console.log("ip", ipAddresses.current);
-
   return (
     <Card className="w-[400px] shadow-lg">
       <CardHeader>
