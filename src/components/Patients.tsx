@@ -9,18 +9,17 @@ const Patients = () => {
 
     return patients
       .map((patient) => {
-        console.log(patient);
         const patient_name = patient[1];
         const risk_score = patient[4] ? parseFloat(patient[3]) : 1;
 
         // Determine health status based on risk_score
         let healthStatus;
-        if (risk_score >= 0 && risk_score < 0.3) {
-          healthStatus = 'Heavily ill';
-        } else if (risk_score >= 0.3 && risk_score < 0.6) {
-          healthStatus = 'Sick';
-        } else if (risk_score >= 0.6 && risk_score <= 1) {
+        if (risk_score >= 0 && risk_score < 0.4) {
           healthStatus = 'Healthy';
+        } else if (risk_score >= 0.4 && risk_score < 0.7) {
+          healthStatus = 'Sick';
+        } else if (risk_score >= 0.7 && risk_score <= 1) {
+          healthStatus = 'Heavily ill';
         } else {
           healthStatus = 'Unknown';
         }
@@ -32,13 +31,13 @@ const Patients = () => {
         };
       })
       // Sort from lowest to greatest
-      .sort((a, b) => a.amount - b.amount);
+      .sort((a, b) => b.amount - a.amount);
   }, [patients]);
 
   return (
     <div style={styles.container}>
       <h2 style={styles.header}>Patient Risk Scores</h2>
-      <p style={styles.subHeader}>Lower scores are more ill</p>
+      <p style={styles.subHeader}>The higher the score indicates worse health.</p>
       <ul style={styles.list}>
         {formattedData.map((sale, index) => (
           <li key={index} style={styles.listItem}>

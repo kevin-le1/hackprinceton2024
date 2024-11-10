@@ -10,11 +10,11 @@ import Router from './utils/Router.tsx'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      {/* <Auth0ProviderWithNavigate> */}
+      <Auth0ProviderWithNavigate>
         <Provider store={store}>
           <Router/>
         </Provider>
-      {/* </Auth0ProviderWithNavigate> */}
+      </Auth0ProviderWithNavigate>
     </BrowserRouter>
   </StrictMode>,
 )

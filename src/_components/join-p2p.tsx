@@ -2,7 +2,7 @@ import React from "react";
 import { useSocket } from "./socket";
 
 const wsIp = "10.49.158.119";
-// const wsIp = "localhost";
+//const wsIp = "localhost";
 
 function JoinNetwork() {
   const { isConnected, ipAddresses, sendMessage } = useSocket(
