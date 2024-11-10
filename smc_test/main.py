@@ -1,7 +1,7 @@
 from collections import defaultdict
 from mpyc.runtime import mpc
 
-from app.database_scripts.database import fetch_patient_for_job
+from app.database_scripts.database import fetch_patient_for_job, round_robin_schedule
 
 type UUID = str
 
@@ -126,6 +126,8 @@ if __name__ == "__main__":
     # data = client_data[mpc.pid]
 
     res = mpc.run(main(data))
+
+    round_robin_schedule(res)
 
     # now insert into database/ zaeem's code
 
