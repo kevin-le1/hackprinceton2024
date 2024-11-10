@@ -3,7 +3,6 @@ import Chart from "../components/Chart";
 import Chart2 from "../components/Specialist";
 import Patients from "../components/Patients";
 import Schedule from "../components/Schedule"
-import JoinNetwork from "../_components/join-p2p";
 
 export default function Dash() {
   return (
@@ -33,7 +32,6 @@ export default function Dash() {
       >
         <Schedule/>
       </div>
-      <JoinNetwork />
     </>
   );
 }

@@ -72,14 +72,13 @@ export const api = createApi({
         method: "POST",
         body: body,
       }),
-
-      // PART FOR DASHBOARD
-      getScheduleAll: builder.query<Patient[], void>({
-        query: () => "/schedule/all",
-        providesTags: ["Schedule"],
-      }),
     }),
-    
+    // PART FOR DASHBOARD
+    getScheduleAll: builder.query<Patient[], void>({
+      query: () => "/schedule/all",
+      providesTags: ["Schedule"],
+    }),
+  })
     // PART FOR DASHBOARD
 
 
