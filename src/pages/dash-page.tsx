@@ -2,7 +2,7 @@ import Navbar from "../components/Navbar";
 import Chart from "../components/Chart";
 import Chart2 from "../components/Specialist";
 import Patients from "../components/Patients";
-import JoinNetwork from "../_components/join-p2p";
+import Schedule from "../components/Schedule"
 
 export default function Dash() {
   return (
@@ -30,9 +30,8 @@ export default function Dash() {
           gap: "2rem",
         }}
       >
-        temp
+        <Schedule/>
       </div>
-      <JoinNetwork />
     </>
   );
 }

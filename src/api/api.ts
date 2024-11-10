@@ -23,7 +23,7 @@ export const api = createApi({
     baseUrl: "http://127.0.0.1:8000/api/v1", // i am hardcoding
   }),
 
-  tagTypes: ["Patient"],
+  tagTypes: ["Patient", "Schedule"],
   endpoints: (builder) => ({
     postPatient: builder.mutation<void, void>({
       query: () => ({
@@ -73,7 +73,15 @@ export const api = createApi({
         body: body,
       }),
     }),
-  }),
+    // PART FOR DASHBOARD
+    getScheduleAll: builder.query<Patient[], void>({
+      query: () => "/schedule/all",
+      providesTags: ["Schedule"],
+    }),
+  })
+    // PART FOR DASHBOARD
+
+
 });
 
 export default api;

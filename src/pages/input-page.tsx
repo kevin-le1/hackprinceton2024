@@ -445,8 +445,8 @@ export default function Input() {
     <>
     <Navbar pageType="input"></Navbar>
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'left', minHeight: '100vh', paddingTop: '4rem'}}>
-      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-        <Paper sx={{ width: '80%', mb: 2 }}>
+      <Box sx={{ width: '90%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', paddingLeft:'2rem', paddingRight:'2rem' }}>
+        <Paper sx={{ width: '100%', mb: 2 }}>
           <EnhancedTableToolbar numSelected={selected.length} addRow={addRow} deleteRow={deleteRow}/>
           <TableContainer>
             <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium'}>
