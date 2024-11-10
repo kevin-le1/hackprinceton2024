@@ -1,14 +1,14 @@
 import { useMemo, useState, useEffect } from "react";
 import api from "../api/api";
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-  } from "../components/ui/table"
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table";
 
 const Schedule = () => {
   // indices: 0 is ordering, 1 specialist name, 2 specialist type, 3 patient name, patient uuid
@@ -71,10 +71,18 @@ const Schedule = () => {
 
   return (
     <div>
-      <div style={{ ...styles.dropdown, padding: '8px', border: 'none', outline: 'none', width: '400px' }}>
+      <div
+        style={{
+          ...styles.dropdown,
+          padding: "8px",
+          border: "none",
+          outline: "none",
+          width: "400px",
+        }}
+      >
         <select
           className="text-black bg-white"
-          style={{...styles.dropdown}}
+          style={{ ...styles.dropdown }}
           onChange={handleSpecialistChange}
           value={currentSpecialist}
         >
@@ -88,39 +96,45 @@ const Schedule = () => {
 
       {currentSpecialist && formattedData[currentSpecialist] && (
         <div>
-            <Table className = "bg-white rounded-md">
-            <TableCaption>The ordering of patients based on their overall ranking.</TableCaption>
+          <Table className="bg-white rounded-md">
+            <TableCaption>
+              The ordering of patients based on their positions in the
+              specialist queue.
+            </TableCaption>
             <TableHeader>
-                <TableRow>
+              <TableRow>
                 <TableHead className="w-[150px]">Specialist Name</TableHead>
                 <TableHead className="w-[150px]">Patient Name</TableHead>
                 <TableHead className="text-right">Order</TableHead>
-                </TableRow>
+              </TableRow>
             </TableHeader>
             <TableBody>
-                {formattedData[currentSpecialist].map((item, index) => (
+              {formattedData[currentSpecialist].map((item, index) => (
                 <TableRow key={index}>
-                <TableCell className = "text-black">{item.specialistName}</TableCell>
-                    <TableCell className="flex text-black">{item.patientName}</TableCell>
-                    <TableCell className="font-medium text-right text-black">{item.order}</TableCell>
-
+                  <TableCell className="text-black">
+                    {item.specialistName}
+                  </TableCell>
+                  <TableCell className="flex text-black">
+                    {item.patientName}
+                  </TableCell>
+                  <TableCell className="font-medium text-right text-black">
+                    {item.order}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
-            </Table>
+          </Table>
         </div>
       )}
-      
     </div>
   );
 };
-
 
 const styles = {
   dropdownContainer: {
     position: "relative",
     width: "100%",
-    fill: "white"
+    fill: "white",
   },
   dropdown: {
     padding: "10px",
@@ -130,7 +144,7 @@ const styles = {
     marginTop: "10px",
     zIndex: 10,
     width: "100%",
-    fill: "white"
+    fill: "white",
   },
   table: {
     width: "100%",
