@@ -71,62 +71,54 @@ const Schedule = () => {
 
   return (
     <div>
-      <div
-        style={{
-          ...styles.dropdown,
-          padding: "8px",
-          border: "none",
-          outline: "none",
-          width: "800px",
-        }}
+    <div style={styles.dropdownContainer}>
+      <select
+        className="text-black"
+        style={styles.dropdown}
+        onChange={handleSpecialistChange}
+        value={currentSpecialist}
       >
-        <select
-          className="text-black bg-white"
-          style={{ ...styles.dropdown }}
-          onChange={handleSpecialistChange}
-          value={currentSpecialist}
-        >
-          {uniqueSpecialists.map((specialist, index) => (
-            <option key={index} value={specialist}>
-              {specialist}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {currentSpecialist && formattedData[currentSpecialist] && (
-        <div className="w-[800px]">
-          <Table className="bg-white rounded-md">
-            <TableCaption>
-              The ordering of patients based on their positions in the
-              specialist queue.
-            </TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[250px]">Specialist Name</TableHead>
-                <TableHead className="w-[250px]">Patient Name</TableHead>
-                <TableHead className="text-right">Order</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {formattedData[currentSpecialist].map((item, index) => (
-                <TableRow key={index}>
-                  <TableCell className="text-black">
-                    {item.specialistName}
-                  </TableCell>
-                  <TableCell className="flex text-black">
-                    {item.patientName}
-                  </TableCell>
-                  <TableCell className="font-medium text-right text-black">
-                    {item.order + 1}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      )}
+        {uniqueSpecialists.map((specialist, index) => (
+          <option key={index} value={specialist}>
+            {specialist}
+          </option>
+        ))}
+      </select>
     </div>
+
+    {currentSpecialist && formattedData[currentSpecialist] && (
+      <div>
+        <Table className="bg-white rounded-md">
+          <TableCaption>
+            The ordering of patients based on their positions in the
+            specialist queue.
+          </TableCaption>
+          <TableHeader>
+            <TableRow style={styles.tableContainer}>
+              <TableHead className="w-[150px]">Specialist Name</TableHead>
+              <TableHead className="w-[150px]">Patient Name</TableHead>
+              <TableHead className="text-right">Order</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {formattedData[currentSpecialist].map((item, index) => (
+              <TableRow key={index}>
+                <TableCell className="text-black">
+                  {item.specialistName}
+                </TableCell>
+                <TableCell className="flex text-black">
+                  {item.patientName}
+                </TableCell>
+                <TableCell className="font-medium text-right text-black">
+                  {item.order + 1}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    )}
+  </div>
   );
 };
 
@@ -134,32 +126,25 @@ const styles = {
   dropdownContainer: {
     position: "relative",
     width: "100%",
-    fill: "white",
+    paddingBottom: "10px",
+    marginTop: '-6.2%',
   },
   dropdown: {
-    padding: "10px",
-    fontSize: "16px",
-    borderRadius: "5px",
-    border: "1px solid #ccc",
-    marginTop: "10px",
-    zIndex: 10,
-    width: "100%",
-    fill: "white",
+    padding: "6px 12px",
+    fontSize: "14px",
+    borderRadius: "4px",
+    border: "1px solid #ddd",
+    backgroundColor: "#f9f9f9",
+    color: "#333",
+    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+    outline: "none",
+    width: "600px",
+    maxHeight: "50px",
   },
-  table: {
-    width: "100%",
-    borderCollapse: "collapse",
-    marginTop: "20px",
-    color: "#000",
-  },
-  th: {
-    borderBottom: "1px solid #ddd",
-    padding: "8px",
-  },
-  td: {
-    borderBottom: "1px solid #ddd",
-    padding: "8px",
-    textAlign: "left",
+  tableContainer: {
+    maxHeight: "200px", // Set max height to make it scrollable
+    overflowY: "auto", // Enable vertical scrolling
+    marginTop: "10px", // Add some spacing above the table
   },
 };
 

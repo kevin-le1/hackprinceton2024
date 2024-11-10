@@ -63,7 +63,7 @@ const styles = {
     padding: "20px",
     borderRadius: "12px",
     minWidth: "650px",
-    maxHeight: "340px",
+    maxHeight: "300px",
     color: "#000",
   },
   header: {
@@ -81,7 +81,7 @@ const styles = {
     listStyleType: "none",
     padding: 0,
     margin: 0,
-    maxHeight: "230px",
+    maxHeight: "180px",
     overflowY: "auto",
   },
   listItem: {

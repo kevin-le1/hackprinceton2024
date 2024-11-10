@@ -25,7 +25,7 @@ function JoinNetwork() {
   console.log("ip", ipAddresses.current);
 
   return (
-    <Card className="w-[400px] shadow-lg">
+    <Card  className="w-[400px] shadow-lg">
       <CardHeader>
         <CardTitle className="flex items-center gap-4">
           Network Status

@@ -15,25 +15,28 @@ export default function Dash() {
           justifyContent: "space-around",
           alignItems: "center",
           paddingTop: "5rem",
-          paddingLeft: "1rem",
-          paddingRight: "1rem",
-          gap: "2rem",
+          paddingLeft: "3.2 rem",
+          paddingRight: "3.2 rem",
+          gap: "1.5rem",
         }}
       >
         <Chart />
         <Chart2 />
-        <Patients />
+        <JoinNetwork/>
       </div>
       <div
         style={{
           display: "flex",
           justifyContent: "space-around",
           alignItems: "center",
-          padding: "2rem",
-          gap: "2rem",
+          paddingTop: "2rem",
+          paddingBottom: "1rem",
+          paddingLeft: "1 rem",
+          paddingRight: "1 rem",
+          gap: "1.5rem",
         }}
       >
-        <JoinNetwork />
+      <Patients />
         <Schedule />
       </div>
     </>
