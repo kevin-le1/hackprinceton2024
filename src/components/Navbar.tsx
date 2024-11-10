@@ -19,7 +19,7 @@ export default function Navbar({ pageType }: any) {
         screen_hint: "signup",
       },
       appState: {
-        returnTo: "/patients",
+        returnTo: "/dashboard",
       },
     });
   };

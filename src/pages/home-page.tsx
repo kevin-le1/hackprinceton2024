@@ -9,6 +9,9 @@ import {
 } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 
+import { useAuth0 } from "@auth0/auth0-react";
+
+
 interface ImageTextSectionProps {
   imageSrc: string;
   imageAlt: string;
@@ -35,6 +38,7 @@ const ImageTextSection = ({
       },
     },
   };
+
 
   return (
     <motion.div
@@ -93,6 +97,19 @@ const ImageTextSection = ({
 };
 
 export default function Home() {
+  const { loginWithRedirect } = useAuth0();
+
+
+  const handleSignup = async () => {
+    await loginWithRedirect({
+      authorizationParams: {
+        screen_hint: "signup",
+      },
+      appState: {
+        returnTo: "/dashboard",
+      },
+    });
+  };
   return (
     <div className="min-h-screen bg-background">
       <div
@@ -149,7 +166,7 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8, duration: 0.8 }}
               >
-                <Button className="bg-primary hover:bg-red2 text-white px-12 py-6 text-xl rounded-full transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                <Button onClick = {handleSignup} className="bg-primary hover:bg-red2 text-white px-12 py-6 text-xl rounded-full transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
                   Get Started Today
                 </Button>
               </motion.div>
