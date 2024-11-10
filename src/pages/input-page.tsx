@@ -1,28 +1,28 @@
-import * as React from 'react';
-import { alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
-import { visuallyHidden } from '@mui/utils';
-import TextField from '@mui/material/TextField'; 
+import * as React from "react";
+import { alpha } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
+import { visuallyHidden } from "@mui/utils";
+import TextField from "@mui/material/TextField";
 import { Button } from "../components/ui/button";
-import {api} from "../api/api";
+import { api } from "../api/api";
 import Navbar from "../components/Navbar.tsx";
 
 interface Data {
@@ -35,10 +35,10 @@ interface Data {
   specialist: string;
   uuid: string;
   age: string;
-  hospitalizations_in_last_year:string;
-        previous_surgeries: string;
-        cholestoral_level: string;
-        respiratory_rate: string;
+  hospitalizations_in_last_year: string;
+  previous_surgeries: string;
+  cholestoral_level: string;
+  respiratory_rate: string;
 }
 
 function createData(
@@ -51,10 +51,10 @@ function createData(
   specialist: any,
   uuid: string,
   age: any,
-  hospitalizations_in_last_year:string,
+  hospitalizations_in_last_year: string,
   previous_surgeries: string,
   cholestoral_level: string,
-  respiratory_rate: string,
+  respiratory_rate: string
 ): Data {
   return {
     id,
@@ -69,7 +69,7 @@ function createData(
     hospitalizations_in_last_year,
     previous_surgeries,
     cholestoral_level,
-    respiratory_rate
+    respiratory_rate,
   };
 }
 
@@ -93,70 +93,70 @@ interface HeadCell {
 
 const headCells: readonly HeadCell[] = [
   {
-    id: 'name',
+    id: "name",
     numeric: false,
     disablePadding: true,
-    label: 'Patient Name',
+    label: "Patient Name",
   },
   {
-    id: 'BMI',
+    id: "BMI",
     numeric: true,
     disablePadding: false,
-    label: 'BMI',
+    label: "BMI",
   },
   {
-    id: 'HR',
+    id: "HR",
     numeric: true,
     disablePadding: false,
-    label: 'HR',
+    label: "HR",
   },
   {
-    id: 'BP',
+    id: "BP",
     numeric: true,
     disablePadding: false,
-    label: 'BPM',
+    label: "BPM",
   },
   {
-    id: 'age',
+    id: "age",
     numeric: true,
     disablePadding: false,
-    label: 'Age',
+    label: "Age",
   },
   {
-    id: 'hospitalizations_in_last_year',
+    id: "hospitalizations_in_last_year",
     numeric: true,
     disablePadding: false,
-    label: 'Hospitalizations',
+    label: "Hospitalizations",
   },
   {
-    id: 'previous_surgeries',
+    id: "previous_surgeries",
     numeric: true,
     disablePadding: false,
-    label: 'Previous Surgeries',
+    label: "Previous Surgeries",
   },
   {
-    id: 'cholestoral_level',
+    id: "cholestoral_level",
     numeric: true,
     disablePadding: false,
-    label: 'Cholestoral Level',
+    label: "Cholestoral Level",
   },
   {
-    id: 'respiratory_rate',
+    id: "respiratory_rate",
     numeric: true,
     disablePadding: false,
-    label: 'Respiratory Rate',
+    label: "Respiratory Rate",
   },
   {
-    id: 'specialist',
+    id: "specialist",
     numeric: true,
     disablePadding: false,
-    label: 'Specialist',
+    label: "Specialist",
   },
   {
-    id: 'patientRisk',
+    id: "patientRisk",
     numeric: true,
     disablePadding: false,
-    label: 'Patient Risk',
+    label: "Patient Risk",
   },
 ];
 
@@ -167,8 +167,7 @@ interface EnhancedTableProps {
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-  const { onSelectAllClick, numSelected, rowCount } =
-    props;
+  const { onSelectAllClick, numSelected, rowCount } = props;
 
   return (
     <TableHead>
@@ -180,23 +179,19 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{
-              'aria-label': 'select all desserts',
+              "aria-label": "select all desserts",
             }}
           />
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
+            align={headCell.numeric ? "right" : "left"}
+            padding={headCell.disablePadding ? "none" : "normal"}
           >
-            <TableSortLabel
-            >
+            <TableSortLabel>
               {headCell.label}
-              {(
-                <Box component="span" sx={visuallyHidden}>
-                </Box>
-              )}
+              {<Box component="span" sx={visuallyHidden}></Box>}
             </TableSortLabel>
           </TableCell>
         ))}
@@ -207,7 +202,12 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 interface EnhancedTableToolbarProps {
   numSelected: number;
 }
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { addRow: () => void, deleteRow: () => void }) {
+function EnhancedTableToolbar(
+  props: EnhancedTableToolbarProps & {
+    addRow: () => void;
+    deleteRow: () => void;
+  }
+) {
   const { numSelected, addRow, deleteRow } = props;
 
   const handleAddRow = () => {
@@ -227,13 +227,16 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { addRow: () =>
         },
         numSelected > 0 && {
           bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+            alpha(
+              theme.palette.primary.main,
+              theme.palette.action.activatedOpacity
+            ),
         },
       ]}
     >
       {numSelected > 0 ? (
         <Typography
-          sx={{ flex: '1 1 100%' }}
+          sx={{ flex: "1 1 100%" }}
           color="inherit"
           variant="subtitle1"
           component="div"
@@ -242,7 +245,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { addRow: () =>
         </Typography>
       ) : (
         <Typography
-          sx={{ flex: '1 1 100%' }}
+          sx={{ flex: "1 1 100%" }}
           variant="h6"
           id="tableTitle"
           component="div"
@@ -251,22 +254,20 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps & { addRow: () =>
         </Typography>
       )}
 
-        <Tooltip title="Add">
-          <IconButton onClick={handleAddRow}>
-            <AddIcon />
-          </IconButton>
-        </Tooltip>
-      
-        <Tooltip title="Delete">
-          <IconButton onClick={handleDeleteRow}>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      
+      <Tooltip title="Add">
+        <IconButton onClick={handleAddRow}>
+          <AddIcon />
+        </IconButton>
+      </Tooltip>
+
+      <Tooltip title="Delete">
+        <IconButton onClick={handleDeleteRow}>
+          <DeleteIcon />
+        </IconButton>
+      </Tooltip>
     </Toolbar>
   );
 }
-
 
 export default function Input() {
   const [selected, setSelected] = React.useState<readonly number[]>([]);
@@ -275,26 +276,35 @@ export default function Input() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const [rows, setRows] = React.useState<Data[]>([]);
-  const [editingCell, setEditingCell] = React.useState<{ id: number; field: keyof Data } | null>(null);
+  const [editingCell, setEditingCell] = React.useState<{
+    id: number;
+    field: keyof Data;
+  } | null>(null);
 
   // Add a new row
   const addRow = () => {
-    const newRow = createData(rows.length + 1, '', '', '', '', '', '', '', '');
+    const newRow = createData(rows.length + 1, "", "", "", "", "", "", "", "");
     setRows([...rows, newRow]);
     handlePostPatient();
   };
 
   // Delete selected rows and update pagination
   const deleteRow = () => {
-    const newRows = rows.filter((row) => !selected.includes(row.id)).map((row, index) => ({ ...row, id: index + 1 }));
-    const uuids = rows.filter((row) => selected.includes(row.id)).map((row) => row.uuid);
+    const newRows = rows
+      .filter((row) => !selected.includes(row.id))
+      .map((row, index) => ({ ...row, id: index + 1 }));
+    const uuids = rows
+      .filter((row) => selected.includes(row.id))
+      .map((row) => row.uuid);
     console.log(uuids);
     uuids.forEach((uuid) => {
       handleDeletePatient(uuid);
-  });
+    });
     setRows(newRows);
     setSelected([]);
-    setPage((prevPage) => Math.min(prevPage, Math.ceil(newRows.length / rowsPerPage) - 1));
+    setPage((prevPage) =>
+      Math.min(prevPage, Math.ceil(newRows.length / rowsPerPage) - 1)
+    );
   };
 
   const [editedRow, setEditedRow] = React.useState<{ [key: string]: any }>({});
@@ -305,7 +315,7 @@ export default function Input() {
     const currentRow = rows.find((row) => row.id === id);
     setEditedRow(currentRow ? { [field]: currentRow[field] } : {});
   };
-  
+
   // Save the cell data
   const saveCell = () => {
     if (editingCell) {
@@ -314,30 +324,32 @@ export default function Input() {
         const updatedRows = prevRows.map((row) =>
           row.id === id ? { ...row, [field]: editedRow[field] } : row
         );
-  
+
         // Call handleEditPatient with the updated row data immediately after updating rows
         const editedCol = updatedRows.find((row) => row.id === id);
         editPatient({
-            data: {
+          data: {
             patient_id: editedCol.uuid,
-            patient_name: editedCol.name || 'No Name',
-            bmi: editedCol.BMI || 'No BMI',
-            heart_rate:editedCol.HR || 'No HR',
-            blood_pressure:editedCol.BP || 'No BP',
-            age: editedCol.age || 'No Age',
-            hospitalizations_in_last_year: editedCol.hospitalizations_in_last_year || 'No Hospitalizations',
-            previous_surgeries: editedCol.previous_surgeries || 'No Surgeries',
-            cholestoral_level: editedCol.cholestoral_level || 'No Cholestoral',
-            respiratory_rate: editedCol.respiratory_rate || 'No Respiratory Rate',
-            specialist_type: editedCol.specialist || 'No Specialist',
-            risk_score: editedCol.patientRisk || 'TBD',
-          }
+            patient_name: editedCol.name || "No Name",
+            bmi: editedCol.BMI || "No BMI",
+            heart_rate: editedCol.HR || "No HR",
+            blood_pressure: editedCol.BP || "No BP",
+            age: editedCol.age || "No Age",
+            hospitalizations_in_last_year:
+              editedCol.hospitalizations_in_last_year || "No Hospitalizations",
+            previous_surgeries: editedCol.previous_surgeries || "No Surgeries",
+            cholestoral_level: editedCol.cholestoral_level || "No Cholestoral",
+            respiratory_rate:
+              editedCol.respiratory_rate || "No Respiratory Rate",
+            specialist_type: editedCol.specialist || "No Specialist",
+            risk_score: editedCol.patientRisk || "TBD",
+          },
         });
-  
+
         return updatedRows;
       });
 
-      console.log(id, field)
+      console.log(id, field);
       // handleEditChange()
       setEditingCell(null);
       setEditedRow({});
@@ -353,7 +365,9 @@ export default function Input() {
   // Handle row selection toggle
   const handleRowClick = (id: number) => {
     setSelected((prevSelected) =>
-      prevSelected.includes(id) ? prevSelected.filter((selectedId) => selectedId !== id) : [...prevSelected, id]
+      prevSelected.includes(id)
+        ? prevSelected.filter((selectedId) => selectedId !== id)
+        : [...prevSelected, id]
     );
   };
 
@@ -363,14 +377,18 @@ export default function Input() {
   };
 
   // Handle rows per page change and reset to first page
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
   // Determine the rows to display based on the current page and rows per page
-  const paginatedRows = rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
+  const paginatedRows = rows.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
 
   /* -------------- */
   // RTK QUERY CODE FROM NOW ON!!!
@@ -393,16 +411,16 @@ export default function Input() {
     try {
       await postPatients();
     } catch (error) {
-      console.error('Failed to post patient:', error);
+      console.error("Failed to post patient:", error);
     }
-  }
+  };
 
   // Delete a patient
   const handleDeletePatient = async (uuid: string) => {
     try {
       await deletePatient(uuid).unwrap();
     } catch (error) {
-      console.error('Failed to delete patient:', error);
+      console.error("Failed to delete patient:", error);
     }
   };
 
@@ -411,23 +429,24 @@ export default function Input() {
   React.useEffect(() => {
     if (patients) {
       console.log("Fetched patients:", patients); // Log to verify structure
-      setRows(patients.map((patient, index) => ({
-        ...patient,
-        id: index + 1,
-        name: patient[1] || 'No Name', // Default value if undefined
-        BMI: patient[4] || 'No BMI',
-        HR: patient[5] || 'No HR',
-        BP: patient[6] || 'No BP',
-        specialist: patient[2]|| 'No Specialist',
-        patientRisk: patient[3] || 'TBD',
-        uuid: patient[0],
-        age: patient[7] || 'No Age',
-        hospitalizations_in_last_year: patient[8] || 'No Hospitalizations',
-        previous_surgeries: patient[9] || 'No Surgeries',
-        cholestoral_level: patient[10] || 'No Cholestoral',
-        respiratory_rate: patient[11] || 'No Respiratory Rate',
-
-      })));
+      setRows(
+        patients.map((patient, index) => ({
+          ...patient,
+          id: index + 1,
+          name: patient[1] || "No Name", // Default value if undefined
+          BMI: patient[4] || "No BMI",
+          HR: patient[5] || "No HR",
+          BP: patient[6] || "No BP",
+          specialist: patient[2] || "No Specialist",
+          patientRisk: patient[3] || "TBD",
+          uuid: patient[0],
+          age: patient[7] || "No Age",
+          hospitalizations_in_last_year: patient[8] || "No Hospitalizations",
+          previous_surgeries: patient[9] || "No Surgeries",
+          cholestoral_level: patient[10] || "No Cholestoral",
+          respiratory_rate: patient[11] || "No Respiratory Rate",
+        }))
+      );
     }
   }, [patients]);
 
@@ -435,110 +454,159 @@ export default function Input() {
     try {
       await editRisk();
     } catch (error) {
-      console.error('Failed to editRisk:', error);
+      console.error("Failed to editRisk:", error);
     }
-  }
-
-
+  };
 
   return (
     <>
-    <Navbar pageType="input"></Navbar>
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'left', minHeight: '100vh', paddingTop: '4rem'}}>
-      <Box sx={{ width: '90%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', paddingLeft:'2rem', paddingRight:'2rem' }}>
-        <Paper sx={{ width: '100%', mb: 2 }}>
-          <EnhancedTableToolbar numSelected={selected.length} addRow={addRow} deleteRow={deleteRow}/>
-          <TableContainer>
-            <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium'}>
-              <EnhancedTableHead
-                numSelected={selected.length}
-                onSelectAllClick={(event) => {
-                  const newSelected = event.target.checked ? rows.map((n) => n.id) : [];
-                  setSelected(newSelected);
-                }}
-                rowCount={rows.length}
-              />
-              <TableBody>
-                {paginatedRows.map((row) => {
-                  const isItemSelected = selected.includes(row.id);
-                  return (
-                    <TableRow key={row.id}>
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            handleRowClick(row.id);
-                          }}
-                        />
-                      </TableCell>
-                      {['name', 'BMI', 'HR', 'BP', 'age', 'hospitalizations_in_last_year', 'previous_surgeries', 'cholestoral_level', 'respiratory_rate','specialist'].map((field) => (
-                        <TableCell
-                        key={field}
-                        onClick={() => handleCellClick(row.id, field as keyof Data)}
-                        align={field === 'name' ? 'left' : 'right'}
-                      >
-                        {editingCell?.id === row.id && editingCell.field === field ? (
-                          <TextField
-                          name={field}
-                          onChange={handleEditChange}
-                          value={editedRow[field] || ''}
-                          onBlur={saveCell}
-                          onKeyDown={(event) => {
-                            if (event.key === 'Enter') saveCell();
-                          }}
-                          variant="standard"
-                          autoFocus
-                          />
-                        ) : (
-                            row[field as keyof Data]
-                          )}
-                        </TableCell>
-                      ))}
-                      <TableCell align="right">{row.patientRisk || 'TBD'}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25, 100]}
-            component="div"
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Paper>
-
-        <Box sx={{ width: '80%', display: 'flex', justifyContent: 'space-between', alignItems: 'left', mt: 2 }}>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={dense}
-              onChange={(event) => setDense(event.target.checked)}
-              sx={{
-                '& .MuiSwitch-switchBase.Mui-checked': {
-                  color: 'gray',
-                },
-                '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-                  backgroundColor: 'gray',
-                },
-              }}
+      <Navbar pageType="input"></Navbar>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "left",
+          minHeight: "100vh",
+          paddingTop: "4rem",
+        }}
+      >
+        <Box
+          sx={{
+            width: "90%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            paddingLeft: "2rem",
+            paddingRight: "2rem",
+          }}
+        >
+          <Paper sx={{ width: "100%", mb: 2 }}>
+            <EnhancedTableToolbar
+              numSelected={selected.length}
+              addRow={addRow}
+              deleteRow={deleteRow}
             />
-          }
-          label="Dense padding"
-          sx={{ marginLeft: 0 }}
-        />
+            <TableContainer>
+              <Table
+                sx={{ minWidth: 750 }}
+                aria-labelledby="tableTitle"
+                size={dense ? "small" : "medium"}
+              >
+                <EnhancedTableHead
+                  numSelected={selected.length}
+                  onSelectAllClick={(event) => {
+                    const newSelected = event.target.checked
+                      ? rows.map((n) => n.id)
+                      : [];
+                    setSelected(newSelected);
+                  }}
+                  rowCount={rows.length}
+                />
+                <TableBody>
+                  {paginatedRows.map((row) => {
+                    const isItemSelected = selected.includes(row.id);
+                    return (
+                      <TableRow key={row.id}>
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            color="primary"
+                            checked={isItemSelected}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              handleRowClick(row.id);
+                            }}
+                          />
+                        </TableCell>
+                        {[
+                          "name",
+                          "BMI",
+                          "HR",
+                          "BP",
+                          "age",
+                          "hospitalizations_in_last_year",
+                          "previous_surgeries",
+                          "cholestoral_level",
+                          "respiratory_rate",
+                          "specialist",
+                        ].map((field) => (
+                          <TableCell
+                            key={field}
+                            onClick={() =>
+                              handleCellClick(row.id, field as keyof Data)
+                            }
+                            align={field === "name" ? "left" : "right"}
+                          >
+                            {editingCell?.id === row.id &&
+                            editingCell.field === field ? (
+                              <TextField
+                                name={field}
+                                onChange={handleEditChange}
+                                value={editedRow[field] || ""}
+                                onBlur={saveCell}
+                                onKeyDown={(event) => {
+                                  if (event.key === "Enter") saveCell();
+                                }}
+                                variant="standard"
+                                autoFocus
+                              />
+                            ) : (
+                              row[field as keyof Data]
+                            )}
+                          </TableCell>
+                        ))}
+                        <TableCell align="right">
+                          {row.patientRisk || "TBD"}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25, 100]}
+              component="div"
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Paper>
 
-          <Button onClick = {handlePostInference}>Submit Data</Button>
+          <Box
+            sx={{
+              width: "80%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "left",
+              mt: 2,
+            }}
+          >
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={dense}
+                  onChange={(event) => setDense(event.target.checked)}
+                  sx={{
+                    "& .MuiSwitch-switchBase.Mui-checked": {
+                      color: "gray",
+                    },
+                    "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+                      backgroundColor: "gray",
+                    },
+                  }}
+                />
+              }
+              label="Dense padding"
+              sx={{ marginLeft: 0 }}
+            />
 
+            <Button onClick={handlePostInference}>Submit Data</Button>
+          </Box>
         </Box>
-      </Box>
-    </div>
+      </div>
     </>
   );
 }
