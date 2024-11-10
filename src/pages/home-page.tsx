@@ -264,7 +264,7 @@ export default function Home() {
                 Join thousands of patients and healthcare providers who trust
                 HealthSync for better health outcomes.
               </p>
-              <Button className="bg-primary hover:bg-red2 text-white px-12 py-6 text-xl rounded-full transform transition hover:scale-105">
+              <Button onClick = {handleSignup} className="bg-primary hover:bg-red2 text-white px-12 py-6 text-xl rounded-full transform transition hover:scale-105">
                 Sign Up Now
               </Button>
             </motion.section>

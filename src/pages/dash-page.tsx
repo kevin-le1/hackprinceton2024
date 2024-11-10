@@ -15,9 +15,9 @@ export default function Dash() {
           justifyContent: "space-around",
           alignItems: "center",
           paddingTop: "5rem",
-          paddingLeft: "3.2 rem",
-          paddingRight: "3.2 rem",
-          gap: "1.5rem",
+          paddingLeft: "1 rem",
+          paddingRight: "1 rem",
+          gap: "1rem",
         }}
       >
         <Chart />
