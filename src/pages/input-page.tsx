@@ -327,21 +327,24 @@ export default function Input() {
 
         // Call handleEditPatient with the updated row data immediately after updating rows
         const editedCol = updatedRows.find((row) => row.id === id);
+        if (editedCol == null) return;
         editPatient({
           data: {
             patient_id: editedCol.uuid,
-            patient_name: editedCol.name || 'No Name',
-            bmi: editedCol.BMI || 'No BMI',
-            heart_rate:editedCol.HR || 'No HR',
-            blood_pressure:editedCol.BP || 'No BP',
-            age: editedCol.age || 'No Age',
-            hospitalizations_in_last_year: editedCol.hospitalizations_in_last_year || 'No Hospitalizations',
-            previous_surgeries: editedCol.previous_surgeries || 'No Surgeries',
-            cholestoral_level: editedCol.cholestoral_level || 'No Cholestoral',
-            respiratory_rate: editedCol.respiratory_rate || 'No Respiratory Rate',
-            specialist_type: editedCol.specialist || 'No Specialist',
+            patient_name: editedCol.name || "No Name",
+            bmi: editedCol.BMI || "No BMI",
+            heart_rate: editedCol.HR || "No HR",
+            blood_pressure: editedCol.BP || "No BP",
+            age: editedCol.age || "No Age",
+            hospitalizations_in_last_year:
+              editedCol.hospitalizations_in_last_year || "No Hospitalizations",
+            previous_surgeries: editedCol.previous_surgeries || "No Surgeries",
+            cholestoral_level: editedCol.cholestoral_level || "No Cholestoral",
+            respiratory_rate:
+              editedCol.respiratory_rate || "No Respiratory Rate",
+            specialist_type: editedCol.specialist || "No Specialist",
             risk_score: editedCol.patientRisk || 0,
-          }
+          },
         });
 
         return updatedRows;
@@ -427,23 +430,24 @@ export default function Input() {
   React.useEffect(() => {
     if (patients) {
       console.log("Fetched patients:", patients); // Log to verify structure
-      setRows(patients.map((patient, index) => ({
-        ...patient,
-        id: index + 1,
-        name: patient[1] || 'No Name', // Default value if undefined
-        BMI: patient[4] || 'No BMI',
-        HR: patient[5] || 'No HR',
-        BP: patient[6] || 'No BP',
-        specialist: patient[2]|| 'No Specialist',
-        patientRisk: patient[3] || 0,
-        uuid: patient[0],
-        age: patient[7] || 'No Age',
-        hospitalizations_in_last_year: patient[8] || 'No Hospitalizations',
-        previous_surgeries: patient[9] || 'No Surgeries',
-        cholestoral_level: patient[10] || 'No Cholestoral',
-        respiratory_rate: patient[11] || 'No Respiratory Rate',
-
-      })));
+      setRows(
+        patients.map((patient, index) => ({
+          ...patient,
+          id: index + 1,
+          name: patient[1] || "No Name", // Default value if undefined
+          BMI: patient[4] || "No BMI",
+          HR: patient[5] || "No HR",
+          BP: patient[6] || "No BP",
+          specialist: patient[2] || "No Specialist",
+          patientRisk: patient[3] || 0,
+          uuid: patient[0],
+          age: patient[7] || "No Age",
+          hospitalizations_in_last_year: patient[8] || "No Hospitalizations",
+          previous_surgeries: patient[9] || "No Surgeries",
+          cholestoral_level: patient[10] || "No Cholestoral",
+          respiratory_rate: patient[11] || "No Respiratory Rate",
+        }))
+      );
     }
   }, [patients]);
 
@@ -457,79 +461,131 @@ export default function Input() {
 
   return (
     <>
-    <Navbar pageType="input"></Navbar>
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'left', minHeight: '100vh', paddingTop: '4rem'}}>
-      <Box sx={{ width: '90%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', paddingLeft:'2rem', paddingRight:'2rem' }}>
-        <Paper sx={{ width: '100%', mb: 2 }}>
-          <EnhancedTableToolbar numSelected={selected.length} addRow={addRow} deleteRow={deleteRow}/>
-          <TableContainer>
-            <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size='small'>
-              <EnhancedTableHead
-                numSelected={selected.length}
-                onSelectAllClick={(event) => {
-                  const newSelected = event.target.checked ? rows.map((n) => n.id) : [];
-                  setSelected(newSelected);
-                }}
-                rowCount={rows.length}
-              />
-              <TableBody>
-                {paginatedRows.map((row) => {
-                  const isItemSelected = selected.includes(row.id);
-                  return (
-                    <TableRow key={row.id}>
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            handleRowClick(row.id);
-                          }}
-                        />
-                      </TableCell>
-                      {['name', 'BMI', 'HR', 'BP', 'age', 'hospitalizations_in_last_year', 'previous_surgeries', 'cholestoral_level', 'respiratory_rate','specialist'].map((field) => (
-                        <TableCell
-                        key={field}
-                        onClick={() => handleCellClick(row.id, field as keyof Data)}
-                        align={field === 'name' ? 'left' : 'right'}
-                      >
-                        {editingCell?.id === row.id && editingCell.field === field ? (
-                          <TextField
-                          name={field}
-                          onChange={handleEditChange}
-                          value={editedRow[field] || ''}
-                          onBlur={saveCell}
-                          onKeyDown={(event) => {
-                            if (event.key === 'Enter') saveCell();
-                          }}
-                          variant="standard"
-                          autoFocus
+      <Navbar pageType="input"></Navbar>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "left",
+          minHeight: "100vh",
+          paddingTop: "4rem",
+        }}
+      >
+        <Box
+          sx={{
+            width: "90%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            paddingLeft: "2rem",
+            paddingRight: "2rem",
+          }}
+        >
+          <Paper sx={{ width: "100%", mb: 2 }}>
+            <EnhancedTableToolbar
+              numSelected={selected.length}
+              addRow={addRow}
+              deleteRow={deleteRow}
+            />
+            <TableContainer>
+              <Table
+                sx={{ minWidth: 750 }}
+                aria-labelledby="tableTitle"
+                size="small"
+              >
+                <EnhancedTableHead
+                  numSelected={selected.length}
+                  onSelectAllClick={(event) => {
+                    const newSelected = event.target.checked
+                      ? rows.map((n) => n.id)
+                      : [];
+                    setSelected(newSelected);
+                  }}
+                  rowCount={rows.length}
+                />
+                <TableBody>
+                  {paginatedRows.map((row) => {
+                    const isItemSelected = selected.includes(row.id);
+                    return (
+                      <TableRow key={row.id}>
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            color="primary"
+                            checked={isItemSelected}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              handleRowClick(row.id);
+                            }}
                           />
-                        ) : (
-                            row[field as keyof Data]
-                          )}
                         </TableCell>
-                      ))}
-                      <TableCell align="right">{row.patientRisk || 0}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[10, 25, 100]}
-            component="div"
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Paper>
+                        {[
+                          "name",
+                          "BMI",
+                          "HR",
+                          "BP",
+                          "age",
+                          "hospitalizations_in_last_year",
+                          "previous_surgeries",
+                          "cholestoral_level",
+                          "respiratory_rate",
+                          "specialist",
+                        ].map((field) => (
+                          <TableCell
+                            key={field}
+                            onClick={() =>
+                              handleCellClick(row.id, field as keyof Data)
+                            }
+                            align={field === "name" ? "left" : "right"}
+                          >
+                            {editingCell?.id === row.id &&
+                            editingCell.field === field ? (
+                              <TextField
+                                name={field}
+                                onChange={handleEditChange}
+                                value={editedRow[field] || ""}
+                                onBlur={saveCell}
+                                onKeyDown={(event) => {
+                                  if (event.key === "Enter") saveCell();
+                                }}
+                                variant="standard"
+                                autoFocus
+                              />
+                            ) : (
+                              row[field as keyof Data]
+                            )}
+                          </TableCell>
+                        ))}
+                        <TableCell align="right">
+                          {row.patientRisk || 0}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Paper>
 
-        <Box sx={{ width: '80%', display: 'flex', justifyContent: 'space-between', alignItems: 'left', mt: 2 }}>
-        {/* <FormControlLabel
+          <Box
+            sx={{
+              width: "80%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "left",
+              mt: 2,
+            }}
+          >
+            {/* <FormControlLabel
           control={
             <Switch
               checked={dense}
@@ -548,35 +604,36 @@ export default function Input() {
           sx={{ marginLeft: 0 }}
         /> */}
 
-          <Box
-            sx={{
-              width: "80%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "left",
-              mt: 2,
-            }}
-          >
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={dense}
-                  onChange={(event) => setDense(event.target.checked)}
-                  sx={{
-                    "& .MuiSwitch-switchBase.Mui-checked": {
-                      color: "gray",
-                    },
-                    "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-                      backgroundColor: "gray",
-                    },
-                  }}
-                />
-              }
-              label="Dense padding"
-              sx={{ marginLeft: 0 }}
-            />
-
-            <Button onClick={handlePostInference}>Submit Data</Button>
+            <Box
+              sx={{
+                width: "80%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "left",
+                mt: 2,
+              }}
+            >
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={dense}
+                    onChange={(event) => setDense(event.target.checked)}
+                    sx={{
+                      "& .MuiSwitch-switchBase.Mui-checked": {
+                        color: "gray",
+                      },
+                      "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
+                        {
+                          backgroundColor: "gray",
+                        },
+                    }}
+                  />
+                }
+                label="Dense padding"
+                sx={{ marginLeft: 0 }}
+              />
+              <Button onClick={handlePostInference}>Submit Data</Button>
+            </Box>
           </Box>
         </Box>
       </div>

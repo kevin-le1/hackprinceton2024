@@ -1,8 +1,7 @@
 import subprocess
-import flask
 from flask_smorest import Blueprint
 from flask import jsonify, request
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor
 
 ns = Blueprint("job", "job", url_prefix="/job", description="job")
 
@@ -47,7 +46,7 @@ def consensus(ip_addresses):
     index = int("".join([k for k, v in ip_addresses.items() if ip == v]))
 
     # Build the command
-    command = ["poetry", "run", "python", "smc_test/main.py", f"-I{index}"]
+    command = ["python", "smc_test/main.py", f"-I{index}"]
 
     # Add each IP to the command, setting localhost for the current IP
     for other_index, other_ip in ip_addresses.items():

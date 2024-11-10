@@ -12,7 +12,7 @@ interface Patient {
   specialist_type: string;
   risk_score: string;
   age: string;
-  hoshospitalizations_in_last_year: string;
+  hospitalizations_in_last_year: string;
   previous_surgeries: string;
   cholestoral_level: string;
   respiratory_rate: string;
