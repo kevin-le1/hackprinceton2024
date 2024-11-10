@@ -9,7 +9,7 @@ export default function Navbar({ pageType } : any) {
   const handleLogin = async () => {
       await loginWithRedirect({
           appState: {
-          returnTo: "/input",
+          returnTo: "/patients",
           },
       });
   };
@@ -20,7 +20,7 @@ export default function Navbar({ pageType } : any) {
               screen_hint: "signup",
             },
           appState: {
-              returnTo: "/input",
+              returnTo: "/patients",
           },
       });
   };
@@ -73,23 +73,26 @@ export default function Navbar({ pageType } : any) {
               <span className="sr-only">HC Project</span>
             </a>
             <nav className="hidden md:flex gap-4">
+          
+
             <a 
-              href="/input" 
+              href="/dashboard" 
+              className={`text-white font-extrabold hover:text-slate-200 ${
+                pageType === "dash" ? "underline" : ""
+              }`}
+            >
+              Dashboard
+            </a>
+            <div className="font-extrabold">|</div> {/* Vertical line separator */}
+            <a 
+              href="/patients" 
               className={`text-white font-extrabold hover:text-slate-200 ${
                 pageType === "input" ? "underline" : ""
               }`}
             >
               Input
             </a>
-            <div className="font-extrabold">|</div> {/* Vertical line separator */}
-            <a 
-              href="/dash" 
-              className={`text-white font-extrabold hover:text-slate-200 ${
-                pageType === "dash" ? "underline" : ""
-              }`}
-            >
-              Dashboard
-            </a></nav>
+            </nav>
             <div className="flex items-center gap-4">
                 <>
                   <Button
@@ -118,22 +121,23 @@ export default function Navbar({ pageType } : any) {
               <span className="sr-only">HC Project</span>
             </a>
             <nav className="hidden md:flex gap-4">
+
             <a 
-              href="/input" 
-              className={`text-white font-extrabold hover:text-slate-200 ${
-                pageType === "input" ? "underline" : ""
-              }`}
-            >
-              Input
-            </a>
-            <div className="font-extrabold">|</div> {/* Vertical line separator */}
-            <a 
-              href="/dash" 
+              href="/dashboard" 
               className={`text-white font-extrabold hover:text-slate-200 ${
                 pageType === "dash" ? "underline" : ""
               }`}
             >
               Dashboard
+            </a>
+            <div className="font-extrabold">|</div> {/* Vertical line separator */}
+            <a 
+              href="/patients" 
+              className={`text-white font-extrabold hover:text-slate-200 ${
+                pageType === "input" ? "underline" : ""
+              }`}
+            >
+              Input
             </a>
             </nav>
             <div className="flex items-center gap-4">
