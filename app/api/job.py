@@ -12,7 +12,7 @@ def consensus(ip_addresses):
     """
     for index, ip in ip_addresses.items():
         # Build the command
-        command = ["python", "file.py", f"-I{index}"]
+        command = ["python", "smc_test/main.py", f"-I{index}"]
 
         # Add each IP to the command, setting localhost for the current IP
         for other_index, other_ip in ip_addresses.items():
@@ -30,12 +30,12 @@ def consensus(ip_addresses):
             print(f"Error executing command for IP {ip}: {e}")
 
 
-@ns.route("/start")
+@ns.route("/start", methods=["POST"])
 def start_job():
     """Endpoint to trigger the consensus process with IP addresses from the request body."""
     try:
         # Get IP addresses from the POST request JSON data
-        ip_addresses = request.json.get("ip_addresses")
+        ip_addresses = request.json.get("ipAddresses")
 
         # Ensure IP addresses are provided in the request
         if not ip_addresses:
@@ -49,4 +49,5 @@ def start_job():
             {"status": "success", "message": "Consensus triggered successfully"}
         ), 200
     except Exception as e:
+        print(e)
         return jsonify({"status": "error", "message": str(e)}), 500
