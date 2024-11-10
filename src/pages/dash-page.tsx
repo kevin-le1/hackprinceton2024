@@ -29,8 +29,7 @@ export default function Dash() {
           display: "flex",
           justifyContent: "space-around",
           alignItems: "center",
-          paddingTop: "2rem",
-          paddingBottom: "2rem",
+          padding: "2rem",
           gap: "2rem",
         }}
       >

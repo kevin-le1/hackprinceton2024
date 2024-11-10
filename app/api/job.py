@@ -79,15 +79,22 @@ def start_job():
         # Trigger the consensus process
         future = consensus(ip_addresses)
 
-        # Optionally, track if the job started successfully
-        if future:
-            return jsonify(
-                {"status": "success", "message": "Consensus triggered successfully"}
-            ), 200
-        else:
-            return jsonify(
-                {"status": "error", "message": "Failed to start consensus"}
-            ), 500
+        # Wait for the job to complete and get results
+        stdout_lines, stderr_lines = future.result()
+
+        # Check if there were any errors in stderr
+        if stderr_lines:
+            return jsonify({
+                "status": "error",
+                "message": "Job completed with errors",
+                "errors": stderr_lines
+            }), 500
+
+        return jsonify({
+            "status": "success", 
+            "message": "Consensus completed successfully",
+            "output": stdout_lines
+        }), 200
 
     except Exception as e:
         print(e)

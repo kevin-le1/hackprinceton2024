@@ -133,18 +133,20 @@ def fetch_all_specialists():
     sql_statement = "SELECT * FROM Specialist"
     return fetch(sql_statement, [])
 
+
 def fetch_specialists_by_type(specialist_type):
-    sql_statement = '''
+    sql_statement = """
         SELECT specialist_id, specialist_name
         FROM Specialist
         WHERE specialist_type = ?
-    '''
+    """
     params = (specialist_type,)
     return fetch(sql_statement, params)
 
+
 # Function to fetch patient matching info for all scheduled matchings
 def fetch_all_scheduling_with_details():
-    sql_statement = '''
+    sql_statement = """
         SELECT 
             Scheduling.order_in_queue,
             Specialist.specialist_name,
@@ -157,8 +159,9 @@ def fetch_all_scheduling_with_details():
             Patient ON Scheduling.patient_id = Patient.patient_id
         INNER JOIN 
             Specialist ON Scheduling.specialist_id = Specialist.specialist_id
-    '''
+    """
     return fetch(sql_statement, [])
+
 
 # Function to update patient information
 def update_patient(
@@ -279,37 +282,50 @@ def delete_specialist(specialist_id):
     params = (specialist_id,)
     fetch(sql_statement, params)
 
+
 def clear_table(table_name):
     try:
         if not os.path.exists(DATABASE_URL):
             raise Exception("Unable to open database file")
-        with sqlite3.connect(DATABASE_URL, isolation_level=None, uri=True) as connection:
-            connection.execute("PRAGMA foreign_keys = OFF;")  # Disable foreign key constraints
-            connection.execute(f"DELETE FROM {table_name};")  # Clear the specified table
-            connection.execute("PRAGMA foreign_keys = ON;")  # Re-enable foreign key constraints
+        with sqlite3.connect(
+            DATABASE_URL, isolation_level=None, uri=True
+        ) as connection:
+            connection.execute(
+                "PRAGMA foreign_keys = OFF;"
+            )  # Disable foreign key constraints
+            connection.execute(
+                f"DELETE FROM {table_name};"
+            )  # Clear the specified table
+            connection.execute(
+                "PRAGMA foreign_keys = ON;"
+            )  # Re-enable foreign key constraints
             print(f"Table {table_name} cleared successfully.")
     except Exception as ex:
         print(f"{sys.argv[0]}:", ex, file=sys.stderr)
         sys.exit(1)
 
+
 def clear_all_tables():
     try:
-        with sqlite3.connect(DATABASE_URL, isolation_level=None, uri=True) as connection:
+        with sqlite3.connect(
+            DATABASE_URL, isolation_level=None, uri=True
+        ) as connection:
             with contextlib.closing(connection.cursor()) as cursor:
                 # Disable foreign key constraints temporarily to avoid issues with foreign key dependencies
                 cursor.execute("PRAGMA foreign_keys = OFF")
-                
+
                 # Clear all tables
                 cursor.execute("DELETE FROM Patient")
                 cursor.execute("DELETE FROM Specialist")
                 cursor.execute("DELETE FROM Scheduling")
-                
+
                 # Re-enable foreign key constraints
                 cursor.execute("PRAGMA foreign_keys = ON")
-                
+
                 print("All tables cleared successfully.")
     except Exception as ex:
         print(f"Error clearing tables: {ex}")
+
 
 def round_robin_schedule(specialist_patient_map):
     """
@@ -331,20 +347,24 @@ def round_robin_schedule(specialist_patient_map):
         if not specialists:
             print(f"No specialists found for type: {specialist_type}")
             continue
-        
+
         # Sort patients by order_in_queue
         patient_queue.sort(key=lambda x: x[0])
-        
+
         # Round-robin assign specialists to patients based on sorted order_in_queue
         num_specialists = len(specialists)
         for i, (order_in_queue, patient_id) in enumerate(patient_queue):
             # Use round-robin to select a specialist
-            specialist_id, specialist_name = specialists[i % num_specialists]
-            
+            specialist_id, _ = specialists[i % num_specialists]
+            print((order_in_queue, patient_id), _)
+
             # Insert into the Scheduling table
-            insert_scheduling(patient_id, order_in_queue, specialist_id)
+            insert_scheduling(
+                patient_id, order_in_queue // num_specialists, specialist_id
+            )
 
     print("Round-robin scheduling completed.")
+
 
 def main():
     clear_all_tables()
@@ -428,7 +448,7 @@ def main():
     # print(scheduling)
     # scheduling = fetch_all_scheduling_with_details()
     # print(scheduling)
-    
+
     # scheduling = fetch_all_scheduling()
     # print(f"Scheduling: {scheduling}")
     # print()

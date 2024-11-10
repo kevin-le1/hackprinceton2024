@@ -30,7 +30,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function Chart() {
-  const totalVisitors = 100; // Total visitors for reference
+  const totalVisitors = 50; // Total visitors for reference
 
   // GET receives all patient data, including UUID & refetching mechanism
   const { data: patients } = api.endpoints.getPatientAll.useQuery();
@@ -106,7 +106,7 @@ export default function Chart() {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="leading-none text-muted-foreground text-center">
-          Showing total number of patients in this hospital.
+          Showing total number of patients in this medical institution.
         </div>
       </CardFooter>
     </Card>

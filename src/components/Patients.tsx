@@ -40,7 +40,7 @@ const Patients = () => {
     <div style={styles.container}>
       <h2 style={styles.header}>Patient Risk Scores</h2>
       <p style={styles.subHeader}>
-        The higher the score indicates worse health.
+        A higher score indicates a higher risk of illness.
       </p>
       <ul style={styles.list}>
         {formattedData.map((sale, index) => (

@@ -133,7 +133,7 @@ if __name__ == "__main__":
     res = mpc.run(main(data))
     clear_table("Scheduling")
     round_robin_schedule(res)
-    scheduling = fetch_all_scheduling_with_details()
+    # scheduling = fetch_all_scheduling_with_details()
     # print(scheduling)
 
     # now insert into database/ zaeem's code

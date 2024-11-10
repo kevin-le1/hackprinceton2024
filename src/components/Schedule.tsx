@@ -95,7 +95,7 @@ const Schedule = () => {
       </div>
 
       {currentSpecialist && formattedData[currentSpecialist] && (
-        <div>
+        <div className="w-[800px]">
           <Table className="bg-white rounded-md">
             <TableCaption>
               The ordering of patients based on their positions in the
@@ -103,8 +103,8 @@ const Schedule = () => {
             </TableCaption>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[150px]">Specialist Name</TableHead>
-                <TableHead className="w-[150px]">Patient Name</TableHead>
+                <TableHead className="w-[250px]">Specialist Name</TableHead>
+                <TableHead className="w-[250px]">Patient Name</TableHead>
                 <TableHead className="text-right">Order</TableHead>
               </TableRow>
             </TableHeader>

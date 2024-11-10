@@ -70,6 +70,7 @@ export const api = createApi({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Schedule"],
     }),
     // PART FOR DASHBOARD
     getScheduleAll: builder.query<Patient[], void>({
