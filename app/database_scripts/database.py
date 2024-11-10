@@ -355,7 +355,7 @@ def round_robin_schedule(specialist_patient_map):
         num_specialists = len(specialists)
         for i, (order_in_queue, patient_id) in enumerate(patient_queue):
             # Use round-robin to select a specialist
-            specialist_id, _ = specialists[i % num_specialists]
+            specialist_id, _ = specialists[order_in_queue % num_specialists]
             print((order_in_queue, patient_id), _)
 
             # Insert into the Scheduling table

@@ -1,7 +1,7 @@
 import subprocess
 from flask_smorest import Blueprint
 from flask import jsonify, request
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, wait
 
 ns = Blueprint("job", "job", url_prefix="/job", description="job")
 
@@ -79,22 +79,31 @@ def start_job():
         # Trigger the consensus process
         future = consensus(ip_addresses)
 
-        # Wait for the job to complete and get results
+        # Wait for the thread to complete
+        done, not_done = wait([future], timeout=30)
+        if not_done:
+            return jsonify({"status": "error", "message": "Job timed out"}), 500
+
+        # Get results from completed future
         stdout_lines, stderr_lines = future.result()
 
         # Check if there were any errors in stderr
         if stderr_lines:
-            return jsonify({
-                "status": "error",
-                "message": "Job completed with errors",
-                "errors": stderr_lines
-            }), 500
+            return jsonify(
+                {
+                    "status": "error",
+                    "message": "Job completed with errors",
+                    "errors": stderr_lines,
+                }
+            ), 500
 
-        return jsonify({
-            "status": "success", 
-            "message": "Consensus completed successfully",
-            "output": stdout_lines
-        }), 200
+        return jsonify(
+            {
+                "status": "success",
+                "message": "Consensus completed successfully",
+                "output": stdout_lines,
+            }
+        ), 200
 
     except Exception as e:
         print(e)
