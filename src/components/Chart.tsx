@@ -41,7 +41,7 @@ export default function Chart() {
     {
       browser: "safari",
       visitors: currentVisitors,
-      fill: "var(--color-safari)",
+      fill: "#E98074",
     },
   ];
   return (
@@ -58,7 +58,7 @@ export default function Chart() {
           <RadialBarChart
             data={chartData}
             startAngle={0}
-            endAngle={(proportion / 100) * 360} // Adjust end angle based on proportion
+            endAngle={(proportion / 100) * 360}
             innerRadius={80}
             outerRadius={110}
           >
@@ -66,7 +66,7 @@ export default function Chart() {
               gridType="circle"
               radialLines={false}
               stroke="none"
-              className="first:fill-muted "
+              className="first:fill-muted last:fill-text-black"
               polarRadius={[86, 74]}
             />
             <RadialBar dataKey="visitors" background cornerRadius={10} />
@@ -84,16 +84,16 @@ export default function Chart() {
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-4xl font-bold"
+                          className="fill-foreground text-4xl font-bold text-black"
                         >
                           {currentVisitors.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
-                          className="fill-muted-foreground"
+                          className="fill-muted-foreground text-black"
                         >
-                          / {totalVisitors} Visitors
+                          Patients
                         </tspan>
                       </text>
                     );
@@ -105,10 +105,9 @@ export default function Chart() {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        <div className="leading-none text-muted-foreground">
-          Showing total current patients out of
+        <div className="leading-none text-muted-foreground text-center">
+          Showing total number of patients in this hospital.
         </div>
-        <div>{totalVisitors} that can be taken care of.</div>
       </CardFooter>
     </Card>
   );

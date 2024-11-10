@@ -34,7 +34,7 @@ export default function Chart2() {
     {
       browser: "safari",
       visitors: currentVisitors,
-      fill: "var(--color-safari)",
+      fill: "#E98074",
     },
   ];
 
@@ -99,10 +99,9 @@ export default function Chart2() {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        <div className="leading-none text-muted-foreground">
-          Showing total number of specialist
+        <div className="leading-none text-muted-foreground text-center">
+          Showing total number of specialist in this geographical region.
         </div>
-        <div>in this geographical region.</div>
       </CardFooter>
     </Card>
   );

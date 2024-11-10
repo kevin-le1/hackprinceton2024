@@ -31,9 +31,9 @@ export default function Dash() {
           gap: "2rem",
         }}
       >
+        <JoinNetwork />
         <Schedule />
       </div>
-      <JoinNetwork />
     </>
   );
 }

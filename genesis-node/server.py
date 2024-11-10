@@ -1,6 +1,12 @@
+import os
+from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
+
+load_dotenv()
+
+GENESIS_IP = os.environ.get("VITE_GENESIS_SERVER", None)
 
 app = Flask(__name__)
 CORS(app)
@@ -45,4 +51,4 @@ def handle_disconnect():
 
 
 if __name__ == "__main__":
-    socketio.run(app, host="localhost", port=5000, debug=True)
+    socketio.run(app, host=GENESIS_IP, port=5000, debug=True)
