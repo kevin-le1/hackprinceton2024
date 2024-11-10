@@ -23,6 +23,7 @@ import { visuallyHidden } from '@mui/utils';
 import TextField from '@mui/material/TextField'; 
 import { Button } from "../components/ui/button";
 import {api} from "../api/api";
+import Navbar from "../components/Navbar.tsx";
 
 interface Data {
   id: number;
@@ -33,6 +34,11 @@ interface Data {
   patientRisk: any;
   specialist: string;
   uuid: string;
+  age: string;
+  hospitalizations_in_last_year:string;
+        previous_surgeries: string;
+        cholestoral_level: string;
+        respiratory_rate: string;
 }
 
 function createData(
@@ -44,6 +50,11 @@ function createData(
   patientRisk: any,
   specialist: any,
   uuid: string,
+  age: any,
+  hospitalizations_in_last_year:string,
+  previous_surgeries: string,
+  cholestoral_level: string,
+  respiratory_rate: string,
 ): Data {
   return {
     id,
@@ -53,7 +64,12 @@ function createData(
     BP,
     patientRisk,
     specialist,
-    uuid
+    uuid,
+    age,
+    hospitalizations_in_last_year,
+    previous_surgeries,
+    cholestoral_level,
+    respiratory_rate
   };
 }
 
@@ -99,6 +115,36 @@ const headCells: readonly HeadCell[] = [
     numeric: true,
     disablePadding: false,
     label: 'BPM',
+  },
+  {
+    id: 'age',
+    numeric: true,
+    disablePadding: false,
+    label: 'Age',
+  },
+  {
+    id: 'hospitalizations_in_last_year',
+    numeric: true,
+    disablePadding: false,
+    label: 'Hospitalizations',
+  },
+  {
+    id: 'previous_surgeries',
+    numeric: true,
+    disablePadding: false,
+    label: 'Previous Surgeries',
+  },
+  {
+    id: 'cholestoral_level',
+    numeric: true,
+    disablePadding: false,
+    label: 'Cholestoral Level',
+  },
+  {
+    id: 'respiratory_rate',
+    numeric: true,
+    disablePadding: false,
+    label: 'Respiratory Rate',
   },
   {
     id: 'specialist',
@@ -233,7 +279,7 @@ export default function Input() {
 
   // Add a new row
   const addRow = () => {
-    const newRow = createData(rows.length + 1, '', '', '', '', '', '', '');
+    const newRow = createData(rows.length + 1, '', '', '', '', '', '', '', '');
     setRows([...rows, newRow]);
     handlePostPatient();
   };
@@ -278,6 +324,11 @@ export default function Input() {
             bmi: editedCol.BMI || 'No BMI',
             heart_rate:editedCol.HR || 'No HR',
             blood_pressure:editedCol.BP || 'No BP',
+            age: editedCol.age || 'No Age',
+            hospitalizations_in_last_year: editedCol.hospitalizations_in_last_year || 'No Hospitalizations',
+            previous_surgeries: editedCol.previous_surgeries || 'No Surgeries',
+            cholestoral_level: editedCol.cholestoral_level || 'No Cholestoral',
+            respiratory_rate: editedCol.respiratory_rate || 'No Respiratory Rate',
             specialist_type: editedCol.specialist || 'No Specialist',
             risk_score: editedCol.patientRisk || 'TBD',
           }
@@ -369,7 +420,13 @@ export default function Input() {
         BP: patient[6] || 'No BP',
         specialist: patient[2]|| 'No Specialist',
         patientRisk: patient[3] || 'TBD',
-        uuid: patient[0]
+        uuid: patient[0],
+        age: patient[7] || 'No Age',
+        hospitalizations_in_last_year: patient[8] || 'No Hospitalizations',
+        previous_surgeries: patient[9] || 'No Surgeries',
+        cholestoral_level: patient[10] || 'No Cholestoral',
+        respiratory_rate: patient[11] || 'No Respiratory Rate',
+
       })));
     }
   }, [patients]);
@@ -385,7 +442,9 @@ export default function Input() {
 
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'left', minHeight: '100vh' }}>
+    <>
+    <Navbar pageType="input"></Navbar>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'left', minHeight: '100vh', paddingTop: '4rem'}}>
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
         <Paper sx={{ width: '80%', mb: 2 }}>
           <EnhancedTableToolbar numSelected={selected.length} addRow={addRow} deleteRow={deleteRow}/>
@@ -414,7 +473,7 @@ export default function Input() {
                           }}
                         />
                       </TableCell>
-                      {['name', 'BMI', 'HR', 'BP', 'specialist'].map((field) => (
+                      {['name', 'BMI', 'HR', 'BP', 'age', 'hospitalizations_in_last_year', 'previous_surgeries', 'cholestoral_level', 'respiratory_rate','specialist'].map((field) => (
                         <TableCell
                         key={field}
                         onClick={() => handleCellClick(row.id, field as keyof Data)}
@@ -480,5 +539,6 @@ export default function Input() {
         </Box>
       </Box>
     </div>
+    </>
   );
 }
