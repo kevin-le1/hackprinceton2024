@@ -62,8 +62,8 @@ const styles = {
     backgroundColor: "#FFF",
     padding: "20px",
     borderRadius: "12px",
-    minWidth: "700px",
-    minHeight: "350px",
+    minWidth: "650px",
+    maxHeight: "340px",
     color: "#000",
   },
   header: {

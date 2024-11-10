@@ -118,7 +118,7 @@ const Schedule = () => {
                     {item.patientName}
                   </TableCell>
                   <TableCell className="font-medium text-right text-black">
-                    {item.order}
+                    {item.order + 1}
                   </TableCell>
                 </TableRow>
               ))}
