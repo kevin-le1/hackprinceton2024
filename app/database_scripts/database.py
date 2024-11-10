@@ -369,26 +369,26 @@ def round_robin_schedule(specialist_patient_map):
 def main():
     clear_all_tables()
     patients = [
-        ("Alice Smith", "Cardiologist", 8.5, 24.5, 72, "120/80", 52, 1, 2, 190, 16),
-        ("Bob Johnson", "Orthopedic", 5.2, 29.4, 78, "130/85", 45, 0, 1, 180, 18),
-        ("Clara Davis", "Neurologist", 7.1, 22.3, 65, "118/75", 60, 2, 3, 200, 15),
-        ("David Martinez", "Cardiologist", 9.2, 30.1, 80, "140/90", 55, 3, 1, 230, 20),
-        ("Eva Green", "Orthopedic", 4.8, 27.6, 74, "125/82", 40, 0, 0, 170, 16),
-        ("Frank Moore", "Neurologist", 6.5, 23.8, 68, "117/78", 58, 1, 2, 210, 17),
-        ("Grace Lee", "Cardiologist", 6.9, 26.1, 75, "122/82", 47, 1, 1, 180, 16),
-        ("Henry Kim", "Orthopedic", 7.3, 28.0, 70, "128/84", 49, 0, 0, 190, 19),
-        ("Ivy Wilson", "Neurologist", 6.2, 25.7, 66, "119/76", 62, 2, 1, 185, 15),
-        ("Jack Brown", "Cardiologist", 8.0, 24.0, 73, "121/79", 54, 1, 3, 200, 17),
-        ("Karen Adams", "Orthopedic", 5.9, 27.5, 77, "126/83", 42, 0, 1, 175, 18),
-        ("Liam Scott", "Neurologist", 7.5, 23.9, 64, "115/72", 59, 2, 2, 195, 15),
+        ("Alice Smith", "Cardiologist", 0.85, 24.5, 72, "120/80", 52, 1, 2, 190, 16),
+        ("Bob Johnson", "Hematologist", 0.52, 29.4, 78, "130/85", 45, 0, 1, 180, 18),
+        ("Clara Davis", "Immunologist", 0.71, 22.3, 65, "118/75", 60, 2, 3, 200, 15),
+        ("David Martinez", "Cardiologist", 0.92, 30.1, 80, "140/90", 55, 3, 1, 230, 20),
+        ("Eva Green", "Hematologist", 0.48, 27.6, 74, "125/82", 40, 0, 0, 170, 16),
+        ("Frank Moore", "Immunologist", 0.65, 23.8, 68, "117/78", 58, 1, 2, 210, 17),
+        ("Grace Lee", "Cardiologist", 0.69, 26.1, 75, "122/82", 47, 1, 1, 180, 16),
+        ("Henry Kim", "Hematologist", 0.73, 28.0, 70, "128/84", 49, 0, 0, 190, 19),
+        ("Ivy Wilson", "Immunologist", 0.62, 25.7, 66, "119/76", 62, 2, 1, 185, 15),
+        ("Jack Brown", "Cardiologist", 0.80, 24.0, 73, "121/79", 54, 1, 3, 200, 17),
+        ("Karen Adams", "Hematologist", 0.59, 27.5, 77, "126/83", 42, 0, 1, 175, 18),
+        ("Liam Scott", "Immunologist", 0.75, 23.9, 64, "115/72", 59, 2, 2, 195, 15),
     ]
     specialists = [
         ("Cardiologist", "Dr. Emily Carter"),
         ("Cardiologist", "Dr. George Wang"),
-        ("Orthopedic", "Dr. Sarah Chen"),
-        ("Orthopedic", "Dr. James Patel"),
-        ("Neurologist", "Dr. Olivia Jones"),
-        ("Neurologist", "Dr. Michael Smith"),
+        ("Hematologist", "Dr. Sarah Chen"),
+        ("Hematologist", "Dr. James Patel"),
+        ("Immunologist", "Dr. Olivia Jones"),
+        ("Immunologist", "Dr. Michael Smith"),
     ]
 
     # Populate the Patient and Specialist tables
