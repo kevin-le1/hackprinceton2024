@@ -5,6 +5,7 @@ from app.database_scripts.database import (
     fetch_patient_for_job,
     round_robin_schedule,
     fetch_all_scheduling_with_details,
+    clear_table,
 )
 
 type UUID = str
@@ -130,7 +131,7 @@ if __name__ == "__main__":
     # data = client_data[mpc.pid]
 
     res = mpc.run(main(data))
-
+    clear_table("Scheduling")
     round_robin_schedule(res)
     scheduling = fetch_all_scheduling_with_details()
     # print(scheduling)
