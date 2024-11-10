@@ -27,3 +27,4 @@ dist-ssr
 **/__pycache__/
 
 .env
+hospital_database.sqlite
