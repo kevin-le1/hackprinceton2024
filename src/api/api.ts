@@ -10,6 +10,11 @@ interface Patient {
     blood_pressure:string;
     specialist_type: string;
     risk_score: string;
+    age: string;
+    hoshospitalizations_in_last_year:string;
+    previous_surgeries:string;
+    cholestoral_level:string;
+    respiratory_rate:string;
   }
 
 export const api = createApi({
@@ -50,14 +55,18 @@ export const api = createApi({
       }),
     }),
     startInference: builder.mutation<void, void>({
-      query: () => ({
-        url: "/patient/inference",
-        method: "POST",
-        body: {},
+        query: () => ({
+          url: "/patient/inference",
+          method: "POST",
+          body: {},
+        }),
+        invalidatesTags: ["Patient"],
       }),
-      invalidatesTags: ["Patient"],
     }),
-  }),
+    
+    // PART FOR DASHBOARD
+
+
 });
 
 export default api;
