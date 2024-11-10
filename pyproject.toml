@@ -31,6 +31,8 @@ pycryptodome = "^3.21.0"
 mpyc = "^0.10"
 ollama = "^0.3.3"
 pandas = "^2.2.3"
+flask-socketio = "^5.4.1"
+eventlet = "^0.37.0"
 
 
 [tool.poetry.group.dev.dependencies]
