@@ -142,28 +142,23 @@ def fetch_specialists_by_type(specialist_type):
     params = (specialist_type,)
     return fetch(sql_statement, params)
 
-# Function to fetch patient matching info for specified specialist typ
-def fetch_patients_by_specialist_type(specialist_type):
-    sql_statement = """
+# Function to fetch patient matching info for all scheduled matchings
+def fetch_all_scheduling_with_details():
+    sql_statement = '''
         SELECT 
             Scheduling.order_in_queue,
-            Specialist.specialist_id,
             Specialist.specialist_name,
-            Patient.patient_name
+            Specialist.specialist_type,
+            Patient.patient_name,
+            Scheduling.patient_id
         FROM 
-            Patient
+            Scheduling
         INNER JOIN 
-            Scheduling ON Patient.patient_id = Scheduling.patient_id
+            Patient ON Scheduling.patient_id = Patient.patient_id
         INNER JOIN 
             Specialist ON Scheduling.specialist_id = Specialist.specialist_id
-        WHERE 
-            Specialist.specialist_type = ?
-        ORDER BY 
-            Scheduling.order_in_queue ASC
-    """
-    params = (specialist_type,)
-    return fetch(sql_statement, params)
-
+    '''
+    return fetch(sql_statement, [])
 
 # Function to update patient information
 def update_patient(
@@ -414,20 +409,24 @@ def main():
     print(f"Scheduling: {scheduling}")
     print()
 
-    specialist_patient_map = {"Cardiologist": [(2, '213bd1bd-198d-400d-905f-c8f7d55d92ea'), (4, '38dd04d9-f763-4bff-944a-a2e627234d1d'), (1, 'e72ac10b-efd3-4a77-bb98-9467ef3a2e0b'), (7, 'e0a3c3c0-013f-47fc-a335-157bc3f91f9b')], "Orthopedic": [], "Neurologist": []}
-    round_robin_schedule(specialist_patient_map)
-
-    scheduling = fetch_all_scheduling()
-    print(f"Scheduling: {scheduling}")
-    print()
-    scheduling_for_cardio = fetch_patients_by_specialist_type("Cardiologist")
-    print(f"Scheduling for cardio: {scheduling_for_cardio}")
-    print()
-    scheduling_for_orthopedic = fetch_patients_by_specialist_type("Orthopedic")
-    print(f"Scheduling for ortho: {scheduling_for_orthopedic}")
-    print()
-    scheduling_for_neuro = fetch_patients_by_specialist_type("Neurologist")
-    print(f"Scheduling for neuro: {scheduling_for_neuro}")
+    # specialist_patient_map = {"Cardiologist": [(2, '213bd1bd-198d-400d-905f-c8f7d55d92ea'), (4, '38dd04d9-f763-4bff-944a-a2e627234d1d'), (1, 'e72ac10b-efd3-4a77-bb98-9467ef3a2e0b'), (7, 'e0a3c3c0-013f-47fc-a335-157bc3f91f9b')], "Orthopedic": [], "Neurologist": []}
+    # round_robin_schedule(specialist_patient_map)
+    # scheduling = fetch_all_scheduling()
+    # print(scheduling)
+    # scheduling = fetch_all_scheduling_with_details()
+    # print(scheduling)
+    
+    # scheduling = fetch_all_scheduling()
+    # print(f"Scheduling: {scheduling}")
+    # print()
+    # scheduling_for_cardio = fetch_patients_by_specialist_type("Cardiologist")
+    # print(f"Scheduling for cardio: {scheduling_for_cardio}")
+    # print()
+    # scheduling_for_orthopedic = fetch_patients_by_specialist_type("Orthopedic")
+    # print(f"Scheduling for ortho: {scheduling_for_orthopedic}")
+    # print()
+    # scheduling_for_neuro = fetch_patients_by_specialist_type("Neurologist")
+    # print(f"Scheduling for neuro: {scheduling_for_neuro}")
 
 
 if __name__ == "__main__":
