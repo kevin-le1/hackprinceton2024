@@ -1,7 +1,12 @@
 from collections import defaultdict
 from mpyc.runtime import mpc
 
-from app.database_scripts.database import fetch_patient_for_job, round_robin_schedule, fetch_all_scheduling_with_details
+from app.database_scripts.database import (
+    fetch_patient_for_job,
+    round_robin_schedule,
+    fetch_all_scheduling_with_details,
+)
+
 type UUID = str
 
 
@@ -128,8 +133,7 @@ if __name__ == "__main__":
 
     round_robin_schedule(res)
     scheduling = fetch_all_scheduling_with_details()
-    print(scheduling)
-
+    # print(scheduling)
 
     # now insert into database/ zaeem's code
 

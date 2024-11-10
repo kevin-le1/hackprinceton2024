@@ -21,7 +21,7 @@ interface Patient {
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://127.0.0.1:8000/api/v1", // i am hardcoding
+    baseUrl: `http://${import.meta.env.VITE_IP}:8000/api/v1`, // i am hardcoding
   }),
 
   tagTypes: ["Patient", "Schedule"],
@@ -77,7 +77,6 @@ export const api = createApi({
       providesTags: ["Schedule"],
     }),
   }),
-  // PART FOR DASHBOARD
 });
 
 export default api;
